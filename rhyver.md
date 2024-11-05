@@ -1,7 +1,7 @@
 # Rhythm Versioning v1.24Q4.45.1
 
 ```
-vMAJOR.YYQ#.WEEK.PATCH[-PRERELEASE][+BUILD]
+vMAJOR.YYQ#.WEEK.STORY[-PRERELEASE][+BUILD]
 ```
 
 ## Components
@@ -23,9 +23,9 @@ vMAJOR.YYQ#.WEEK.PATCH[-PRERELEASE][+BUILD]
 - Continuous through year.
 - Example: Week 18 (Standard ISO week).
 
-### 04. PATCH
+### 04. STORY
 - Non-negative integer.
-- Fine-tuning within the week.
+- Backward compatible changes within the week.
 - Incremental updates and bug fixes.
 - Example: 1.
 

@@ -28,24 +28,24 @@
     <main>
         <section>
             <h1>Rhythm Versioning</h1> 
-            <p>Rhythm versioning (RhyVer) helps teams maintain momentum and follow a release cadence. Using the format <span>vMAJOR.YYQ#.WEEK.PATCH</span>, it combines semantic versioning principles with granular temporal context, creating a natural rhythm for software releases.</p> 
+            <p>Rhythm versioning (RhyVer) helps teams maintain momentum and follow a release cadence. Using the format <span>vMAJOR.YYQ#.WEEK.STORY</span>, it combines semantic versioning principles with granular temporal context, creating a natural rhythm for software releases.</p> 
             
             <p>For example, <span>v2.24Q4.45.32</span> indicates a major version 2 release from the year 2024, Q4, ISO week 45, with 32 backward compatible changes, enabling predictable release cycles and better alignment with business goals.</p>
 
             <h5>TL;DR</h5>
-            <p>Given a version <span>vMAJOR.YYQ#.WEEK.PATCH</span>, increment the:</p>
+            <p>Given a version <span>vMAJOR.YYQ#.WEEK.STORY</span>, increment the:</p>
             <ul>
                 <li><span>MAJOR</span> version when you make API compatibility changes.</li>
                 <li><span>YYQ#</span> to match the current year and quarter.</li>
                 <li><span>WEEK</span> number to match the ISO week (1-53).</li>
-                <li><span>PATCH</span> for backward compatible changes that do not change the API.</li>
+                <li><span>STORY</span> for backward compatible changes that do not change the API.</li>
             </ul>
 
         </section>
 
         <section>
             <h3>Rhythm Versioning Specification</h3>
-            <pre><code>vMAJOR.YYQ#.WEEK.PATCH[-PRERELEASE][+BUILD]</code></pre>
+            <pre><code>vMAJOR.YYQ#.WEEK.STORY[-PRERELEASE][+BUILD]</code></pre>
 
             <h5>RhyVer Example</h5>
             <caption>
@@ -56,7 +56,7 @@
   Example: v2.24Q4.45.32-rc.2
             │ │    │  │  │
             │ │    │  │  └──  Release candidate
-            │ │    │  └─────  Patch
+            │ │    │  └─────  Stories
             │ │    └────────  ISO week
             │ └─────────────  Year & quarter
             └───────────────  Major version
@@ -89,9 +89,9 @@
             </dl>
 
             <dl>
-                <dt>04. PATCH</dt>
+                <dt>04. STORY</dt>
                 <dd>Non-negative integer.</dd>
-                <dd>Fine-tuning within the week.</dd>
+                <dd>Backward compatible changes within the week.</dd>
                 <dd>Incremental updates and bug fixes.</dd>
                 <dd>Example: 1</dd>
             </dl>
@@ -193,7 +193,7 @@
                   </tr>
                   <tr>
                     <td><code>v2.24Q2.16.1</code></td>
-                    <td>Patch release</td>
+                    <td>Story release</td>
                   </tr>
                   <tr>
                     <td><code>v2.24Q2.17.0</code></td>
@@ -222,7 +222,7 @@
                     </td> 
                   <tr>
                     <td><code>v2.24Q2.16.1</code> &nbsp;&nbsp;&nbsp;</td>
-                    <td>$ rhythm next patch</td>
+                    <td>$ rhythm next story</td>
                   </tr>
                   <tr>
                     <td><code>v2.24Q2.17.0</code></td>
@@ -252,7 +252,7 @@
             <li>Prefix 'v' and MAJOR version. Examples: v0, v1, v42</li>
             <li>YYQ# format. Examples: 24Q1, 25Q3</li>
             <li>ISO week number. Examples: 1, 42, 53</li>
-            <li>PATCH version. Examples: 0, 1, 42</li>
+            <li>STORY version. Examples: 0, 1, 42</li>
             <li>Pre-release Suffix (Optional). Examples: -alpha.1, -beta.2, -rc.1</li>
             <li>Build Metadata (Optional). Examples: +build.123, +exp.sha.5114f85</li>
         </ul>
@@ -279,11 +279,11 @@
 
         <p>This maintains clarity about when the software was actually released, which is more valuable than tracking development time.</p>
 
-        <h5>How do I handle hotfixes vs regular patches?</h5>
-        <p>Both hotfixes vs regular patches use the PATCH number, but they can be distinguished by the release process:</p>
+        <h5>How do I handle hotfixes vs regular stories?</h5>
+        <p>Both hotfixes vs regular stories use the STORY number, but they can be distinguished by the release process:</p>
 
         <pre><code>
-        Regular patch: v2.24Q2.16.0 → v2.24Q2.16.1  // Normal iteration
+        Regular story: v2.24Q2.16.0 → v2.24Q2.16.1  // Normal iteration
         Hotfix from production: v2.24Q2.16.0 → v2.24Q2.16.1-hotfix.1 → v2.24Q2.16.1  // Emergency fix
         </code></pre>
 
