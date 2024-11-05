@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en" data-new-ui-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta name="handheldfriendly" content="true">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+
+    <title>Rhythm Versioning System (RhyVer)</title>
+    <link rel="stylesheet" href="/assets/css/style.scss">
+
+    <meta name="description" content="Versioning system for API changes and release timing.">
+    <meta name="author" content="@planetabhi">
+    <meta name="copyright" content="Method Black">
+</head>
+
+<body>
+    <header>
+        <h1>
+            <a href="/" aria-label="Rhythm Versioning System">
+            <span>Rhythm Versioning System</span>
+            <img src="rhyver.svg" alt="Rhythm Versioning System" width="96" height="48">
+            </a>
+        </h1>
+    </header>
+    <main>
+        <section>
+            <h1>Rhythm Versioning System (RhyVer)</h1> 
+            <p>Rhythm versioning system helps teams build a release cadence. Using the format <span>vMAJOR.YYQ#.WEEK.PATCH</span>, it combines semantic versioning principles with granular temporal context, creating a natural rhythm for product releases. For example, <span>v2.24Q4.45.1</span> indicates a major version 2 release from the year 2024, quarter 4, week 45, with one patch, enabling predictable release cycles and better alignment with business goals.</p>
+
+            <p>Given a version <span>vMAJOR.YYQ#.WEEK.PATCH</span>, increment the:</p>
+            <ul>
+                <li><span>MAJOR</span> version when you make API compatibility changes.</li>
+                <li><span>YYQ#</span> to match the current year and quarter.</li>
+                <li><span>WEEK</span> number to match the ISO week (1-53).</li>
+                <li><span>PATCH</span> for backward compatible fixes or improvements.</li>
+            </ul>
+
+        </section>
+
+        <section>
+            <h3>Rhythm Specification</h3>
+            <pre><code>vMAJOR.YYQ#.WEEK.PATCH[-PRERELEASE][+BUILD]</code></pre>
+
+            <h5>Example</h5>
+            <table>
+                <caption>
+                    <p><span>v2.24Q2.18.2</span></p>  
+                </caption>
+                <tbody>
+                  <tr>
+                    <td><strong>v2</strong></td>
+                    <td>Major version</td>
+                  </tr>
+                  <tr>
+                    <td><strong>24Q2</strong> &nbsp;&nbsp;&nbsp;</td>
+                    <td>Year & quarter</td>
+                  </tr>
+                  <tr>
+                    <td><strong>18</strong></td>
+                    <td>ISO week</td>
+                  </tr>
+                  <tr>
+                    <td><strong>2</strong></td>
+                    <td>Patch</td>
+                  </tr>
+                </tbody>
+            </table>
+
+            <h5>Components</h5>
+
+            <dl>
+                <dt>01. MAJOR</dt>
+                <dd>Non-negative integer with a prefix “v”.</dd>
+                <dd>Changes for incompatible API modifications.</dd>
+                <dd>Example: <span>v2</span> indicates a major version 2.</dd>
+            </dl>
+
+            <dl>
+                <dt>02. YYQ#</dt>
+                <dd>YY: Two-digit year (23, 24, etc.).</dd>
+                <dd>Q#: Quarter number (Q1-Q4).</dd>
+                <dd>Provides fiscal/planning context.</dd>
+                <dd>Example: 24Q2 = 2024, Quarter 2</dd>
+            </dl>
+
+            <dl>
+                <dt>03. WEEK</dt>
+                <dd>ISO week number (1-53).</dd>
+                <dd>Maintains global standard.</dd>
+                <dd>Continuous through year.</dd>
+                <dd>Example: Week 18 (Standard ISO week)</dd>
+            </dl>
+
+            <dl>
+                <dt>04. PATCH</dt>
+                <dd>Non-negative integer.</dd>
+                <dd>Fine-tuning within the week.</dd>
+                <dd>Continuous through year.</dd>
+                <dd>Example: 1</dd>
+            </dl>
+
+            <dl>
+                <dt>05. PRERELEASE (Optional)</dt>
+                <dd>Optional preview releases.</dd>
+                <dd>Format:  <span>-alpha.1</span>, <span>-beta.1</span>, <span>-rc.1</span></dd>
+                <dd>Example: v2.2024.43.0-beta.1</dd>
+            </dl>
+
+            <dl>
+                <dt>06. BUILD (Optional)</dt>
+                <dd>Optional build metadata.</dd>
+                <dd>Format: <span>+build.123</span></dd>
+                <dd>Example: v2.2024.43.0+build.123</dd>
+            </dl>
+        </section>
+
+        <section>
+            <h3>Why Use Rhythm?</h3>    
+    
+            <dl>
+                <dt>Natural Timing</dt>
+                <dd>Releases flow with time.</dd>
+                <dd>Easy progress tracking.</dd>
+                <dd>Natural business alignment.</dd>
+            </dl>
+    
+            <dl>
+                <dt>Consistent Tempo</dt>
+                <dd>Predictable release patterns.</dd>
+                <dd>Prevents feature congestion.</dd>
+                <dd>Supports agile workflows.</dd>
+            </dl>
+    
+            <dl>
+                <dt>Business Harmony</dt>
+                <dd>Aligns with sprint cycles.</dd>
+                <dd>Facilitates planning.</dd>
+                <dd>Clear stakeholder communication.</dd>
+            </dl>
+        </section>
+
+        <section>
+            <h3>Finding Your Rhythm</h3>
+
+            <table style="max-width: 100%; width: 100%;">
+                <tbody>
+                  <tr>
+                    <td colspan="2" class="breakout">Quarter Mapping
+                  </td>
+                  <tr>
+                    <td><code>Q1</code></td>
+                    <td>Weeks 01-13</td>
+                  </tr>
+                  <tr>
+                    <td><code>Q2</code></td>
+                    <td>Weeks 14-26</td>
+                  </tr>
+                  <tr>
+                    <td><code>Q3</code></td>
+                    <td>Weeks 27-39</td>
+                  </tr>
+                  <tr>
+                    <td><code>Q4</code> &nbsp;&nbsp;&nbsp;</td>
+                    <td>Weeks 40-52/53</td>
+                  </tr>
+
+                    <tr>
+                        <td colspan="2" class="breakout">Quarter Transition
+                    </td>
+                  <tr>
+                    <td><code>v2.24Q1.13.2</code> &nbsp;&nbsp;&nbsp;</td>
+                    <td>Last week considered Q1</td>
+                  </tr>
+                  <tr>
+                    <td><code>v2.24Q2.14.0</code></td>
+                    <td>First week considered Q2</td>
+                  </tr>
+
+                    <tr>
+                        <td colspan="2" class="breakout">Year Transition
+                    </td>
+                  <tr>
+                    <td><code>v2.23Q4.52.1</code> &nbsp;&nbsp;&nbsp;</td>
+                    <td>ISO week 52, 2023</td>
+                  </tr>
+                  <tr>
+                    <td><code>v2.24Q1.01.0</code></td>
+                    <td>ISO week 1, 2024</td>
+                  </tr>
+
+                    <tr>
+                        <td colspan="2" class="breakout">Release Pattern
+                    </td> 
+                  <tr>
+                    <td><code>v2.24Q2.16.0</code> &nbsp;&nbsp;&nbsp;</td>
+                    <td>Initial release, ISO week 16</td>
+                  </tr>
+                  <tr>
+                    <td><code>v2.24Q2.16.1</code></td>
+                    <td>Patch release</td>
+                  </tr>
+                  <tr>
+                    <td><code>v2.24Q2.17.0</code></td>
+                    <td>Next week release</td>
+                  </tr>
+
+                    <tr>
+                        <td colspan="2" class="breakout">Major Version Change
+                    </td> 
+                    </tr>
+                  <tr>
+                    <td><code>v2.24Q2.16.5</code></td>
+                    <td>Current version</td>
+                  </tr>
+                  <tr>
+                    <td><code>v3.24Q2.16.0-beta.1</code> &nbsp;&nbsp;&nbsp;</td>
+                    <td>Beta for major update</td>
+                  </tr>
+                  <tr>
+                    <td><code>v3.24Q2.16.0</code></td>
+                    <td>Major version release</td>
+                  </tr>
+
+                    <tr>
+                        <td colspan="2" class="breakout">Orchestration
+                    </td> 
+                  <tr>
+                    <td><code>v2.24Q2.16.1</code> &nbsp;&nbsp;&nbsp;</td>
+                    <td>$ rhythm next patch</td>
+                  </tr>
+                  <tr>
+                    <td><code>v2.24Q2.17.0</code></td>
+                    <td>$ rhythm next week</td>
+                  </tr>
+                  <tr>
+                    <td><code>v2.24Q3.27.0</code></td>
+                    <td>$ rhythm next quarter</td>
+                  </tr>
+                  <tr>
+                    <td><code>v3.24Q2.16.0</code></td>
+                    <td>$ rhythm next major</td>
+                  </tr>
+                </tbody>
+            </table> 
+        </section>
+
+        <section>
+            <h3>Rhythm Version Validation</h3>
+            <p>Here's a simple regex pattern for validating rhythm version strings:</p>
+            <pre><code>
+            ^v(0|[1-9]\d*)\.(2\d)Q([1-4])\.((?:[1-9]|[1-4]\d|5[0-3]))\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
+            </code></pre>
+    
+            <p>Enforcing:</p>
+            <ul>
+                <li>Prefix 'v' and MAJOR version. Examples: v0, v1, v42</li>
+                <li>YYQ# format. Examples: 24Q1, 25Q3</li>
+                <li>ISO week number. Examples: 1, 42, 53</li>
+                <li>PATCH version. Examples: 0, 1, 42</li>
+                <li>Pre-release Suffix (Optional). Examples: -alpha.1, -beta.2, -rc.1</li>
+                <li>Build Metadata (Optional). Examples: +build.123, +exp.sha.5114f85</li>
+            </ul>
+        </section>
+
+        <section>
+        <h3>FAQs</h3>
+
+        <h5>How do I handle ISO week vs Quarter misalignment?</h5>
+        <p>Use the business quarter designation that makes most sense for your reporting, regardless of exact ISO week boundaries. For example:</p>
+        <pre><code>
+        v2.24Q1.13.0  // Even if week 13 slightly overlaps Q2
+        v2.24Q2.14.0  // Starting Q2 designation with week 14
+        </code></pre>
+        <p>The quarter designation (Q#) is primarily for business context, while the ISO week number provides the precise temporal reference. This intentional flexibility allows for business alignment while maintaining technical accuracy.</p>
+
+        <h5>If I'm releasing a version that was developed across a quarter boundary, which quarter should I use?</h5>
+        <p>Always use the quarter in which the release is happening, not when development started. For example:</p>
+
+        <pre><code>
+        v2.24Q1.13.2  // Last release in Q1
+        v2.24Q2.14.0  // First release in Q2, even if development started in Q1
+        </code></pre>
+
+        <p>This maintains clarity about when the software was actually released, which is more valuable than tracking development time.</p>
+
+        <h5>How do I handle hotfixes vs regular patches?</h5>
+        <p>Both hotfixes vs regular patches use the PATCH number, but they can be distinguished by the release process:</p>
+
+        <pre><code>
+            Regular patch: v2.24Q2.16.0 → v2.24Q2.16.1  // Normal iteration
+            Hotfix from production: v2.24Q2.16.0 → v2.24Q2.16.1-hotfix.1 → v2.24Q2.16.1  // Emergency fix
+        </code></pre>
+
+        <p>Use pre-release tags for hotfix candidates if they need testing before full deployment.</p>
+
+        <h5>What if my release candidate testing spans multiple weeks?</h5>
+        <p>Keep incrementing the pre-release number while maintaining the target version:</p>
+
+        <pre><code>
+            Week 16: v3.24Q2.16.0-rc.1
+            Week 17: v3.24Q2.16.0-rc.2
+            Week 18: v3.24Q2.16.0  // Final release
+        </code></pre>
+
+        <p>Meanwhile, you can still have development continuing on the next version:</p>
+
+        <pre><code>
+            v2.24Q2.16.0  // Current production
+            v3.24Q2.16.0-rc.2  // Long-running RC
+            v2.24Q2.17.0  // Ongoing development
+        </code></pre>
+
+        </section>
+
+        <section>
+        <h3>About</h3>
+        <p>Rhythm versioning specification was originally authored by Abhimanyu Rana. Please <a href="#">open an issue on GitHub</a> to provide feedback.</p>
+
+        <figure>
+            <img src="/signature.svg" alt="sign" width="171" height="39">
+        </figure>
+        <dl>
+            <dt>Abhimanyu Rana</dt>
+            <dd>Designer. Engineer.</dd>
+            <dd><a href="https://planetabhi.com/">@planetabhi</a></dd>
+        </dl>
+        </section>
+
+    </main>
+</body>
+
+</html>
