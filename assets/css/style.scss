@@ -55,6 +55,11 @@ body {
     line-height: var(--lh-desktop-body-xl);
     font-style: normal;
     min-height: 100vh;
+
+    @media screen and (max-width: 600px) {
+        font-size: var(--mobile-body);
+        line-height: var(--lh-mobile-body);
+    }
 }
 
 body,
@@ -108,6 +113,7 @@ section > h3::before {
 h1, h2, h3, h4, h5 {
     font-weight: 700;
     font-style: normal;
+    margin-bottom: var(--spacing-04);
 }
 
 header {
@@ -136,7 +142,7 @@ header h1 a img {
     width: auto
 }
 
-p {
+p, li {
     margin-bottom: var(--spacing-07);
     color: var(--text-primary);
     hyphens: auto;
@@ -188,7 +194,6 @@ h2 {
     font-size: var(--desktop-heading-02);
     line-height: var(--lh-desktop-heading-02);
     letter-spacing: var(--desktop-tracking-heading-02);
-    margin-bottom: var(--spacing-04);
 
     @media screen and (max-width: 600px) {
         font-size: var(--mobile-heading-02);
@@ -201,7 +206,6 @@ h3 {
     font-size: var(--desktop-heading-03);
     line-height: var(--lh-desktop-heading-03);
     letter-spacing: var(--desktop-tracking-heading-03);
-    margin-bottom: var(--spacing-04);
 
     @media screen and (max-width: 600px) {
         font-size: var(--mobile-heading-03);
@@ -214,7 +218,6 @@ h4 {
     font-weight: 500;
     font-size: var(--desktop-heading-04);
     line-height: var(--lh-desktop-heading-04);
-    margin-bottom: var(--spacing-04);
     letter-spacing: var(--desktop-tracking-heading-02);
 
     @media screen and (max-width: 600px) {
@@ -227,7 +230,6 @@ h5 {
     font-weight: 500;
     font-size: var(--desktop-heading-05);
     line-height: var(--lh-desktop-heading-05);
-    margin-bottom: var(--spacing-04);
     letter-spacing: var(--desktop-tracking-heading-03);
 
     @media screen and (max-width: 600px) {
@@ -439,14 +441,14 @@ a {
     text-decoration-thickness: 0.06em;
     text-underline-offset: 0.1em;
     color: var(--link);
-}
 
-a:hover {
-    color: var(--link-hover);
-}
+    &:hover {
+        color: var(--link-hover);
+    }
 
-a:visited {
-    color: var(--link-visited);
+    &:visited {
+        color: var(--link-visited);
+    }
 }
 
 b,

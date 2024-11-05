@@ -28,7 +28,7 @@
     <main>
         <section>
             <h1>Rhythm Versioning System (RhyVer)</h1> 
-            <p>Rhythm versioning system helps teams build a release cadence. Using the format <span>vMAJOR.YYQ#.WEEK.PATCH</span>, it combines semantic versioning principles with granular temporal context, creating a natural rhythm for product releases. For example, <span>v2.24Q4.45.1</span> indicates a major version 2 release from the year 2024, quarter 4, week 45, with one patch, enabling predictable release cycles and better alignment with business goals.</p>
+            <p>Rhythm versioning system helps teams build a release cadence. Using the format <span>vMAJOR.YYQ#.WEEK.PATCH</span>, it combines semantic versioning principles with granular temporal context, creating a natural rhythm for product releases. For example, <span>v2.24Q4.45.32</span> indicates a major version 2 release from the year 2024, quarter 4, week 45, with 32 backward compatible changes, enabling predictable release cycles and better alignment with business goals.</p>
 
             <p>Given a version <span>vMAJOR.YYQ#.WEEK.PATCH</span>, increment the:</p>
             <ul>
@@ -41,16 +41,16 @@
         </section>
 
         <section>
-            <h3>Rhythm Specification</h3>
+            <h3>Rhythm Versioning Specification</h3>
             <pre><code>vMAJOR.YYQ#.WEEK.PATCH[-PRERELEASE][+BUILD]</code></pre>
 
-            <h5>Example</h5>
+            <h5>RhyVer Example</h5>
             <caption>
-              <p><span>v2.24Q2.18.32-rc.2</span></p>  
+              <p><span>v2.24Q4.45.32-rc.2</span></p>  
           </caption>
 
 <pre><code>
-  Example: v2.24Q2.18.32-rc.2
+  Example: v2.24Q4.45.32-rc.2
             │ │    │  │  │
             │ │    │  │  └──  Release candidate
             │ │    │  └─────  Patch
@@ -109,7 +109,7 @@
         </section>
 
         <section>
-            <h3>Why Use Rhythm?</h3>    
+            <h3>Why Use Rhythm Versioning?</h3>    
     
             <dl>
                 <dt>Natural Timing</dt>
@@ -283,23 +283,6 @@
         </code></pre>
 
         <p>Use pre-release tags for hotfix candidates if they need testing before full deployment.</p>
-
-        <h5>What if my release candidate testing spans multiple weeks?</h5>
-        <p>Keep incrementing the pre-release number while maintaining the target version:</p>
-
-        <pre><code>
-        Week 16: v3.24Q2.16.0-rc.1
-        Week 17: v3.24Q2.16.0-rc.2
-        Week 18: v3.24Q2.16.0  // Final release
-        </code></pre>
-
-        <p>Meanwhile, you can still have development continuing on the next version:</p>
-
-        <pre><code>
-        v2.24Q2.16.0  // Current production
-        v3.24Q2.16.0-rc.2  // Long-running RC
-        v2.24Q2.17.0  // Ongoing development
-        </code></pre>
 
         </section>
 

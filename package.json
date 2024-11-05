@@ -1,6 +1,6 @@
 {
   "name": "rhyver",
-  "version": "v0.24Q4.45.0",
+  "version": "v0.24Q4.45.1",
   "type": "module",
   "main": "main.js",
   "scripts": {
