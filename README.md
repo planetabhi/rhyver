@@ -18,3 +18,4 @@ Example:   v2.24Q4.45.32-rc.2
             └───────────────  Major version
 ```
 
+[Read the Full Documentation](https://rhyver.netlify.app/) 👀
