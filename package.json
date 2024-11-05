@@ -1,7 +1,7 @@
 {
   "name": "rhyver",
   "version": "v1.24Q4.45.1",
-  "description": "Versioning system for API changes and release timing.",
+  "description": "Rhythm versioning for software.",
   "type": "module",
   "main": "main.js",
   "scripts": {

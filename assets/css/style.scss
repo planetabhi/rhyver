@@ -85,7 +85,7 @@ main {
     display: flex;
     flex-direction: column;
     margin-inline: auto;
-    width: min(100%, 37rem)
+    width: min(100%, 49rem)
 }
 
 main {
@@ -253,7 +253,8 @@ p+h5 {
 h4 {margin-top: var(--spacing-09);}
 h4:first-child {margin-top: 0;}
 
-h1+p {
+h1+p,
+h1 + p + p {
     font-size: var(--desktop-body-xl);
     line-height: var(--lh-desktop-body-xl);
     color: var(--text-secondary);

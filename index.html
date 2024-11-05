@@ -8,7 +8,7 @@
     <meta name="handheldfriendly" content="true">
     <meta name="viewport" content="initial-scale=1, width=device-width">
 
-    <title>Rhythm Versioning System (RhyVer)</title>
+    <title>Rhythm Versioning (RhyVer)</title>
     <link rel="stylesheet" href="/assets/css/style.scss">
 
     <meta name="description" content="Versioning system for API changes and release timing.">
@@ -19,17 +19,20 @@
 <body>
     <header>
         <h1>
-            <a href="/" aria-label="Rhythm Versioning System">
-            <span>Rhythm Versioning System</span>
-            <img src="rhyver.svg" alt="Rhythm Versioning System" width="48" height="48">
+            <a href="/" aria-label="Rhythm Versioning">
+            <span>Rhythm Versioning</span>
+            <img src="rhyver.svg" alt="Rhythm Versioning" width="48" height="48">
             </a>
         </h1>
     </header>
     <main>
         <section>
-            <h1>Rhythm Versioning System (RhyVer)</h1> 
-            <p>Rhythm versioning system helps teams build a release cadence. Using the format <span>vMAJOR.YYQ#.WEEK.PATCH</span>, it combines semantic versioning principles with granular temporal context, creating a natural rhythm for product releases. For example, <span>v2.24Q4.45.32</span> indicates a major version 2 release from the year 2024, quarter 4, week 45, with 32 backward compatible changes, enabling predictable release cycles and better alignment with business goals.</p>
+            <h1>Rhythm Versioning</h1> 
+            <p>Rhythm versioning (RhyVer) helps teams maintain momentum and follow a release cadence. Using the format <span>vMAJOR.YYQ#.WEEK.PATCH</span>, it combines semantic versioning principles with granular temporal context, creating a natural rhythm for software releases.</p> 
+            
+            <p>For example, <span>v2.24Q4.45.32</span> indicates a major version 2 release from the year 2024, Q4, ISO week 45, with 32 backward compatible changes, enabling predictable release cycles and better alignment with business goals.</p>
 
+            <h5>TL;DR</h5>
             <p>Given a version <span>vMAJOR.YYQ#.WEEK.PATCH</span>, increment the:</p>
             <ul>
                 <li><span>MAJOR</span> version when you make API compatibility changes.</li>
@@ -106,6 +109,8 @@
                 <dd>Format: <span>+build.123</span></dd>
                 <dd>Example: v2.2024.43.0+build.123</dd>
             </dl>
+
+            <p><a href="https://raw.githubusercontent.com/planetabhi/rhyver/refs/heads/main/rhyver.md" target="_blank">View Raw</a></p>
         </section>
 
         <section>
@@ -288,7 +293,7 @@
 
         <section>
         <h3>About</h3>
-        <p>Rhythm versioning specification was originally authored by Abhimanyu Rana. Please <a href="https://github.com/planetabhi/rhyver/issues">open an issue on GitHub</a> to provide feedback or suggest changes.</p>
+        <p>Rhythm versioning specification was originally authored by Abhimanyu Rana. To provide feedback or suggest improvements, please <a href="https://github.com/planetabhi/rhyver/issues">open a GitHub issue</a>.</p>
 
         <figure>
             <img src="/signature.svg" alt="sign" width="171" height="39">
