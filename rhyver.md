@@ -1,4 +1,4 @@
-# Rhythm Versioning Specification (RhyVer) v0.24Q4.45.1
+# Rhythm Versioning v1.24Q4.45.1
 
 ```
 vMAJOR.YYQ#.WEEK.PATCH[-PRERELEASE][+BUILD]
