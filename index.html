@@ -164,7 +164,7 @@
                         <td colspan="2" class="breakout">Quarter Transition
                     </td>
                   <tr>
-                    <td><code>v2.24Q1.13.2</code> &nbsp;&nbsp;&nbsp;</td>
+                    <td><code>v2.24Q1.13.24</code> &nbsp;&nbsp;&nbsp;</td>
                     <td>Last week considered Q1</td>
                   </tr>
                   <tr>
@@ -217,27 +217,47 @@
                     <td>Major version release</td>
                   </tr>
 
-                    <tr>
-                        <td colspan="2" class="breakout">Orchestration
-                    </td> 
-                  <tr>
-                    <td><code>v2.24Q2.16.1</code> &nbsp;&nbsp;&nbsp;</td>
-                    <td>$ rhythm next story</td>
-                  </tr>
-                  <tr>
-                    <td><code>v2.24Q2.17.0</code></td>
-                    <td>$ rhythm next week</td>
-                  </tr>
-                  <tr>
-                    <td><code>v2.24Q3.27.0</code></td>
-                    <td>$ rhythm next quarter</td>
-                  </tr>
-                  <tr>
-                    <td><code>v3.24Q2.16.0</code></td>
-                    <td>$ rhythm next major</td>
-                  </tr>
                 </tbody>
             </table> 
+        </section>
+
+        <section>
+          <h3>Reading Your Business Rhythm</h3>
+          <pre><code>        
+   v2.24Q4.45.32
+    │   │  │  └─────  Weekly wins
+    │   │  └────────  Calendar pulse
+    │   └───────────  Business cycle
+    └───────────────  Major changes
+
+    Q1 │ Weeks 01-13    New year momentum
+    Q2 │ Weeks 14-26    Building velocity
+    Q3 │ Weeks 27-39    Sustained delivery
+    Q4 │ Weeks 40-52    Year-end alignment
+          </pre></code>
+          <h5>Release Sequence</h5>
+          <pre><code>
+  Week 27 │ v2.24Q3.27.0   Launch of initiatives
+          │ v2.24Q3.27.1   Feedback incorporated
+          │ v2.24Q3.27.2   Performance improvements
+          │
+  Week 28 │ v2.24Q3.28.0   New feature set
+          │ v2.24Q3.28.1   Polishing
+          │
+  Week 29 │ v2.24Q3.29.0   Quarterly planning alignment
+          </code></pre>
+
+          <h5>Risk Indicators</h5>
+          <pre><code>
+  HIGH RISK:
+  └── No releases for >2 weeks
+  └── Hotfix ratio >20%
+
+  LOW RISK:
+  └── Release gap of 1 week
+  └── Story count drop 25%
+          </code></pre>
+
         </section>
 
         <section>
@@ -269,7 +289,7 @@
         </code></pre>
         <p>The quarter designation (Q#) is primarily for business context, while the ISO week number provides the precise temporal reference. This intentional flexibility allows for business alignment while maintaining technical accuracy.</p>
 
-        <h5>If I'm releasing a version that was developed across a quarter boundary, which quarter should I use?</h5>
+        <h5>What quarter applies to a release spanning multiple quarters?</h5>
         <p>Always use the quarter in which the release is happening, not when development started. For example:</p>
 
         <pre><code>
