@@ -20,8 +20,8 @@ Example:   v2.24Q4.45.32-rc.2
 ```json
 {
 "name": "package-name",
-"rhyver": "v2.24Q4.45.32",   /* Full RhyVer */
-"version": "2.45.32"         /* Simplified from v2.24Q4.45.32 */
+"rhyver": "v2.24Q4.45.32",
+"version": "2.45.32",
 }
 ```
 

@@ -1,8 +1,8 @@
 {
   "name": "rhyver",
-  "version": "1.45.5",
-  "rhyver": "v1.24Q4.45.5",
-  "description": "Rhythm versioning for software.",
+  "version": "1.45.6",
+  "rhyver": "v1.24Q4.45.6",
+  "description": "RhyVer: A versioning system that combines version tracking with calendar to help teams maintain regular release schedules and align software updates with business planning cycles.",
   "type": "module",
   "main": "main.js",
   "scripts": {
