@@ -10,7 +10,6 @@ For example, `v2.24Q4.45.32` indicates a major version 2 release from the year 2
 vMAJOR.YYQ#.WEEK.STORY[-PRERELEASE][+BUILD]
 
 Example:   v2.24Q4.45.32-rc.2
-            │ │    │  │
             │ │    │  └─────  Stories
             │ │    └────────  ISO week
             │ └─────────────  Year & quarter
@@ -21,9 +20,9 @@ Example:   v2.24Q4.45.32-rc.2
 ```json
 {
 "name": "package-name",
-"rhyver": "v2.24Q4.45.32",   // Full RhyVer as custom field
-"version": "2.45.32"         // Simplified from v2.24Q4.45.32
+"rhyver": "v2.24Q4.45.32",   /* Full RhyVer */
+"version": "2.45.32"         /* Simplified from v2.24Q4.45.32 */
 }
 ```
 
-[Read the Full Documentation](https://rhyver.netlify.app/) (๑•̀ㅂ•́)و✧
+[Read the Full Documentation](https://rhyver.com/) (๑•̀ㅂ•́)و✧

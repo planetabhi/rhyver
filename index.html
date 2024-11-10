@@ -50,12 +50,10 @@
 <pre><code>vMAJOR.YYQ#.WEEK.STORY[-PRERELEASE][+BUILD]</code></pre>
 
 <pre><code>Example: v2.24Q4.45.32-rc.2
-│ │    │  │  │
-│ │    │  │  └──  Release candidate
-│ │    │  └─────  Stories
-│ │    └────────  ISO week
-│ └─────────────  Year & quarter
-└───────────────  Major version  
+          │ │    │  └─────  Stories
+          │ │    └────────  ISO week
+          │ └─────────────  Year & quarter
+          └───────────────  Major version  
 </code></pre>
 
 <h5>Components</h5>
@@ -154,7 +152,7 @@ Q4 (Weeks 40-52)    Year-end alignment
 
 <pre><code>Week 27 │ v2.24Q3.27.0   Release of milestone 01
         │ v2.24Q3.27.1   Feedback incorporated
-        │ v2.24Q3.27.2   Design and performance improvements
+        │ v2.24Q3.27.2   Design & performance improvements
         │
 Week 28 │ v2.24Q3.28.0   Release of milestone 02
         │ v2.24Q3.28.1   Polishing
@@ -163,11 +161,11 @@ Week 29 │ v2.24Q3.29.0   Quarter plan alignment
 </code></pre>
 
 <h5>Risk Indicators</h5>
-<pre><code>HIGH RISK:
+<pre><code>High Risk
 └── No releases for >2 weeks
 └── Hotfix ratio >20%
 
-LOW RISK:
+Low Risk:
 └── Release gap of 1 week
 └── Story count drop 25%
 </code></pre>
