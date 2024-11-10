@@ -19,9 +19,9 @@ Example:   v2.24Q4.45.32-rc.2
 ### Using with npm
 ```json
 {
-"name": "package-name",
-"rhyver": "v2.24Q4.45.32",
-"version": "2.45.32",
+  "name": "package-name",
+  "rhyver": "v2.24Q4.45.32",
+  "version": "2.45.32",
 }
 ```
 
