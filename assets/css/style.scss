@@ -39,6 +39,7 @@
     font-size: 16px;
     --sans: "copy", var(--system-ui);
     --code: "mono", var(--monospace-code);
+    --rhyver: oklch(73.99% 0.1198 74.7);
     scroll-behavior: smooth;
     scroll-padding-top: 2rem;
 }
@@ -65,18 +66,18 @@ body {
 body,
 p,
 li {
-  font-size: var(--desktop-body);
-  line-height: var(--lh-desktop-body);
+    font-size: var(--desktop-body);
+    line-height: var(--lh-desktop-body);
 
-  @media screen and (max-width: 600px) {
-    font-size: var(--mobile-body);
-    line-height: var(--lh-mobile-body);
-  }
+    @media screen and (max-width: 600px) {
+        font-size: var(--mobile-body);
+        line-height: var(--lh-mobile-body);
+    }
 }
 
 @supports(-webkit-touch-callout: none) {
     body {
-        min-height: -webkit-fill-available
+        min-height: -webkit-fill-available;
     }
 }
 
@@ -85,20 +86,20 @@ main {
     display: flex;
     flex-direction: column;
     margin-inline: auto;
-    width: min(100%, 49rem)
+    width: min(100%, 42rem);
 }
 
 main {
     flex: 1;
-    margin-bottom: var(--spacing-15, 5rem)
+    margin-bottom: var(--spacing-15, 5rem);
 }
 
-main>*+* {
-    margin-top: var(--spacing-08, 1.5rem)
+main > * + * {
+    margin-top: var(--spacing-08, 1.5rem);
 }
 
 section {
-    margin-bottom: 3rem;
+    margin-top: var(--spacing-12);
 }
 
 section > h3::before {
@@ -107,45 +108,45 @@ section > h3::before {
     width: 4rem;
     height: 2px;
     display: block;
-    background: var(--border-inked); 
+    background: var(--rhyver); 
 }
 
-h1, h2, h3, h4, h5 {
+h1, h2, h3 {
     font-weight: 700;
     font-style: normal;
     margin-bottom: var(--spacing-04);
 }
 
 header {
-    height: var(--spacing-16, 6em)
+    height: var(--spacing-16, 6em);
 }
 
 header h1 {
     align-items: center;
     display: flex;
     flex: 1;
-    justify-content: flex-start
+    justify-content: flex-start;
+    margin: 0;
 }
 
 header h1 a {
     height: var(--spacing-11, 3em);
-    max-width: 5.96em
+    max-width: 5.96em;
 }
 
 header h1 a span {
-    display: none
+    display: none;
 }
 
 header h1 a img {
     height: 100%;
     max-height: 100%;
-    width: auto
+    width: auto;
 }
 
 p, li {
     margin-bottom: var(--spacing-07);
     color: var(--text-primary);
-    hyphens: auto;
     overflow-wrap: break-word;
     text-justify: inter-word;
 }
@@ -247,11 +248,12 @@ p+hr,
 ul+hr,
 hr+ul,
 p+h5 {
-  margin-bottom: var(--spacing-05);
+    margin-bottom: var(--spacing-03);
 }
 
-h4 {margin-top: var(--spacing-09);}
-h4:first-child {margin-top: 0;}
+h5 {
+    margin-bottom: 0;
+}
 
 h1+p,
 h1 + p + p {
@@ -261,8 +263,8 @@ h1 + p + p {
     margin-bottom: var(--spacing-09);
 
     @media screen and (max-width: 600px) {
-      font-size: var(--mobile-body-xl);
-      line-height: var(--lh-mobile-body-xl);
+        font-size: var(--mobile-body-xl);
+        line-height: var(--lh-mobile-body-xl);
     }
 }
 
@@ -277,32 +279,32 @@ ul {
     -webkit-padding-start: var(--spacing-08);
 
     @media screen and (max-width: 600px) {
-      font-size: var(--mobile-body);
-      line-height: var(--lh-mobile-body);
+        font-size: var(--mobile-body);
+        line-height: var(--lh-mobile-body);
     }
 
     li {
-      font-size: var(--desktop-body);
-      line-height: var(--lh-desktop-body);
-      margin-bottom: var(--spacing-02);
-
-      @media screen and (max-width: 600px) {
-        font-size: var(--mobile-body);
-        line-height: var(--lh-mobile-body);
+        font-size: var(--desktop-body);
+        line-height: var(--lh-desktop-body);
         margin-bottom: var(--spacing-02);
-      }
+
+        @media screen and (max-width: 600px) {
+            font-size: var(--mobile-body);
+            line-height: var(--lh-mobile-body);
+            margin-bottom: var(--spacing-02);
+        }
     }
 }
 
 ol,
 ul {
     display: flex;
-    flex-direction: column
+    flex-direction: column;
 }
 
 ol li,
 ul li {
-    position: relative
+    position: relative;
 }
 
 ol li:before,
@@ -310,23 +312,23 @@ ul li:before {
     font-feature-settings: 'case', 'tnum';
     left: 0;
     position: absolute;
-    top: 0
+    top: 0;
 }
 
 ol {
     counter-reset: counter;
-    gap: var(--spacing-02)
+    gap: var(--spacing-02);
 }
 
 ol li {
     counter-increment: counter;
-    padding-left: var(--spacing-09)
+    padding-left: var(--spacing-09);
 }
 
 ol li:before {
     content: counter(counter) '.';
     text-align: right;
-    width: var(--spacing-08)
+    width: var(--spacing-08);
 }
 
 ul {
@@ -341,12 +343,12 @@ ul li {
 
 ul li:before {
     content: '—';
-    opacity: 0.32
+    opacity: 0.32;
 }
 
 figure {
     margin-top: var(--spacing-08);
-    margin-left: calc(var(--spacing-04) * -1)
+    margin-left: calc(var(--spacing-04) * -1);
 }
 
 dl {
@@ -357,7 +359,7 @@ dl {
 }
 
 dl dt {
-    font-weight: 500
+    font-weight: 500;
 }
 
 dl dd {
@@ -377,8 +379,8 @@ table {
     line-height: var(--lh-desktop-body);
   
     @media screen and (max-width: 600px) {
-      font-size: var(--mobile-body);
-      line-height: var(--lh-mobile-body);
+        font-size: var(--mobile-body);
+        line-height: var(--lh-mobile-body);
     }
 }
 
@@ -396,7 +398,7 @@ td {
     border-bottom: 1px solid var(--border-muted);
   
     tr:last-child & {
-      border-bottom: none;
+        border-bottom: none;
     }
 }
 
@@ -418,22 +420,39 @@ code {
   
 pre {
     word-wrap: normal;
-    padding: 0.25em 0.5em;
+    padding: var(--spacing-07);
     background-color: var(--background-secondary);
     overflow-x: scroll;
-    margin-bottom: var(--spacing-07);
-  
-    code {
-      display: inline;
-      max-width: auto;
-      padding: 0;
-      overflow: visible;
-      white-space: pre;
-      word-wrap: normal;
-      word-break: normal;
-      background: transparent;
-      border: 0;
+    margin-bottom: var(--spacing-12);
+    border-radius: var(--spacing-03);
+
+    &:not(:last-child):has(+ p) {
+        margin-bottom: var(--spacing-06);
     }
+
+    &:not(:last-child):has(+ p + p) {
+        margin-bottom: var(--spacing-06);
+    }
+
+    &:not(:last-of-type) {
+        margin-bottom: var(--spacing-06);
+    }
+
+    code {
+        display: inline;
+        max-width: auto;
+        padding: 0;
+        overflow: visible;
+        white-space: pre;
+        word-wrap: normal;
+        word-break: normal;
+        background: transparent;
+        border: 0;
+    }
+}
+
+section > pre:last-child {
+    margin-bottom: 0;
 }
 
 a {
@@ -464,18 +483,9 @@ em {
 }
 
 @media (max-width: 50rem) {
-
     header,
     main {
         padding-left: var(--spacing-09, 2em);
         padding-right: var(--spacing-09, 2em);
-    }
-    main form aside fieldset input {
-      width: 100%;
-    }
-    .button {
-      top: var(--spacing-02);
-      right: var(--spacing-02);
-      height: 30px;
     }
 }

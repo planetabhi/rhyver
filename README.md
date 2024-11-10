@@ -6,16 +6,24 @@ For example, `v2.24Q4.45.32` indicates a major version 2 release from the year 2
 
 
 ### Specification
-```
+```bash
 vMAJOR.YYQ#.WEEK.STORY[-PRERELEASE][+BUILD]
 
 Example:   v2.24Q4.45.32-rc.2
-            │ │    │  │  │
-            │ │    │  │  └──  Release candidate
+            │ │    │  │
             │ │    │  └─────  Stories
             │ │    └────────  ISO week
             │ └─────────────  Year & quarter
             └───────────────  Major version
 ```
 
-[Read the Full Documentation](https://rhyver.netlify.app/) 👀
+### Using with npm
+```json
+{
+"name": "package-name",
+"rhyver": "v2.24Q4.45.32",   // Full RhyVer as custom field
+"version": "2.45.32"         // Simplified from v2.24Q4.45.32
+}
+```
+
+[Read the Full Documentation](https://rhyver.netlify.app/) (๑•̀ㅂ•́)و✧

@@ -1,7 +1,7 @@
 {
   "name": "rhyver",
-  "rhyver": "v1.24Q4.45.3",
-  "version": "1.45.3",
+  "version": "1.45.4",
+  "rhyver": "v1.24Q4.45.4",
   "description": "Rhythm versioning for software.",
   "type": "module",
   "main": "main.js",
