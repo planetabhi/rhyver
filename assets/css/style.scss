@@ -39,7 +39,7 @@
     font-size: 16px;
     --sans: "copy", var(--system-ui);
     --code: "mono", var(--monospace-code);
-    --rhyver: oklch(73.99% 0.1198 74.7);
+    --rhyver: oklch(63.5% 0.1004 76.62);
     scroll-behavior: smooth;
     scroll-padding-top: 2rem;
 }
@@ -150,9 +150,9 @@ h1, h2, h3 {
 }
 
 h1 {
-    @include heading-styles('01');
-    margin-bottom: var(--spacing-05);
     max-inline-size: 32rem;
+    margin-bottom: var(--spacing-05);
+    @include heading-styles('01');
 
     @media screen and (max-width: 600px) {
         max-inline-size: 20rem;
