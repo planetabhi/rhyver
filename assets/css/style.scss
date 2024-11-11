@@ -2,7 +2,7 @@
 @use "@new-ui/colors";
 @use "@new-ui/typography";
 @use "@new-ui/spacings";
-  
+
 @font-face {
     font-family: 'copy';
     src: url('/assets/fonts/regular.woff2') format('woff2'),
@@ -44,6 +44,25 @@
     scroll-padding-top: 2rem;
 }
 
+@mixin mobile-typography {
+    @media screen and (max-width: 600px) {
+        font-size: var(--mobile-body);
+        line-height: var(--lh-mobile-body);
+    }
+}
+
+@mixin heading-styles($level) {
+    font-size: var(--desktop-heading-#{$level});
+    line-height: var(--lh-desktop-heading-#{$level});
+    letter-spacing: var(--desktop-tracking-heading-#{$level});
+
+    @media screen and (max-width: 600px) {
+        font-size: var(--mobile-heading-#{$level});
+        line-height: var(--lh-mobile-heading-#{$level});
+        letter-spacing: var(--mobile-tracking-heading-#{$level});
+    }
+}
+
 body {
     background: var(--background);
     color: var(--text-primary);
@@ -56,23 +75,7 @@ body {
     line-height: var(--lh-desktop-body-xl);
     font-style: normal;
     min-height: 100vh;
-
-    @media screen and (max-width: 600px) {
-        font-size: var(--mobile-body);
-        line-height: var(--lh-mobile-body);
-    }
-}
-
-body,
-p,
-li {
-    font-size: var(--desktop-body);
-    line-height: var(--lh-desktop-body);
-
-    @media screen and (max-width: 600px) {
-        font-size: var(--mobile-body);
-        line-height: var(--lh-mobile-body);
-    }
+    @include mobile-typography;
 }
 
 @supports(-webkit-touch-callout: none) {
@@ -81,125 +84,96 @@ li {
     }
 }
 
-header,
-main {
+body,
+p,
+li {
+    font-size: var(--desktop-body);
+    line-height: var(--lh-desktop-body);
+    @include mobile-typography;
+}
+
+%flex-column {
     display: flex;
     flex-direction: column;
     margin-inline: auto;
     width: min(100%, 42rem);
 }
 
+header,
+main {
+    @extend %flex-column;
+}
+
+header {
+    height: var(--spacing-16, 6em);
+    
+    div {
+        align-items: center;
+        display: flex;
+        flex: 1;
+        justify-content: flex-start;
+        margin: 0;
+        cursor: pointer;
+    }
+}
+
 main {
     flex: 1;
     margin-bottom: var(--spacing-15, 5rem);
-}
 
-main > * + * {
-    margin-top: var(--spacing-08, 1.5rem);
+    > * + * {
+        margin-top: var(--spacing-08, 1.5rem);
+    }
 }
 
 section {
     margin-top: var(--spacing-12);
+
+    > h3::before {
+        content: '';
+        margin-bottom: 1rem;
+        width: 4rem;
+        height: 2px;
+        display: block;
+        background: var(--rhyver);
+    }
 }
 
-section > h3::before {
-    content: '';
-    margin-bottom: 1rem;
-    width: 4rem;
-    height: 2px;
-    display: block;
-    background: var(--rhyver); 
-}
-
-h1, h2, h3 {
+%heading-base {
     font-weight: 700;
     font-style: normal;
     margin-bottom: var(--spacing-04);
 }
 
-header {
-    height: var(--spacing-16, 6em);
-}
-
-header div{
-    align-items: center;
-    display: flex;
-    flex: 1;
-    justify-content: flex-start;
-    margin: 0;
-    cursor: pointer;
-}
-
-p, li {
-    margin-bottom: var(--spacing-07);
-    color: var(--text-primary);
-    overflow-wrap: break-word;
-    text-justify: inter-word;
-}
-  
-span, strong {
-    font-weight: 500;
-    font-family: var(--code);
-    color: var(--text-primary);
-    text-decoration: underline;
-    text-decoration-style: dotted;
-    text-decoration-color: var(--border);
-    text-underline-offset: var(--spacing-02);
-}
-
-blockquote {
-    padding: 0 0 0 12px;
-    color: var(--text-primary);
-    border-left: 3px solid var(--border);
-    margin-bottom: var(--spacing-07);
-
-    > :first-child {
-        margin-top: 0;
-    }
-
-    > :last-child {
-        margin-bottom: 0;
-    }
+h1, h2, h3 {
+    @extend %heading-base;
 }
 
 h1 {
-    font-size: var(--desktop-heading-01);
-    line-height: var(--lh-desktop-heading-01);
-    letter-spacing: var(--desktop-tracking-heading-01);
+    @include heading-styles('01');
     margin-bottom: var(--spacing-05);
     max-inline-size: 32rem;
 
     @media screen and (max-width: 600px) {
-        font-size: var(--mobile-heading-01);
-        line-height: var(--lh-mobile-heading-01);
-        letter-spacing: var(--mobile-tracking-heading-01);
         max-inline-size: 20rem;
     }
-}
 
-h2 {
-    font-size: var(--desktop-heading-02);
-    line-height: var(--lh-desktop-heading-02);
-    letter-spacing: var(--desktop-tracking-heading-02);
+    + p,
+    + p + p {
+        font-size: var(--desktop-body-xl);
+        line-height: var(--lh-desktop-body-xl);
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-09);
 
-    @media screen and (max-width: 600px) {
-        font-size: var(--mobile-heading-02);
-        line-height: var(--lh-mobile-heading-02);
-        letter-spacing: var(--mobile-tracking-heading-02);
+        @media screen and (max-width: 600px) {
+            font-size: var(--mobile-body-xl);
+            line-height: var(--lh-mobile-body-xl);
+        }
     }
 }
 
-h3 {
-    font-size: var(--desktop-heading-03);
-    line-height: var(--lh-desktop-heading-03);
-    letter-spacing: var(--desktop-tracking-heading-03);
-
-    @media screen and (max-width: 600px) {
-        font-size: var(--mobile-heading-03);
-        line-height: var(--lh-mobile-heading-03);
-        letter-spacing: var(--mobile-tracking-heading-03);
-    }
-}
+h2 { @include heading-styles('02'); }
+h3 { @include heading-styles('03'); }
 
 h4 {
     font-weight: 500;
@@ -218,6 +192,7 @@ h5 {
     font-size: var(--desktop-heading-05);
     line-height: var(--lh-desktop-heading-05);
     letter-spacing: var(--desktop-tracking-heading-03);
+    margin-bottom: 0;
 
     @media screen and (max-width: 600px) {
         font-size: var(--mobile-heading-05);
@@ -225,136 +200,112 @@ h5 {
     }
 }
 
-h5+p,
-h5+ul,
-p+hr,
-h5+ul h5+hr,
-hr+p,
-p+hr,
-ul+hr,
-hr+ul,
-p+h5 {
+h5 + p,
+h5 + ul,
+p + hr,
+h5 + ul h5 + hr,
+hr + p,
+p + hr,
+ul + hr,
+hr + ul,
+p + h5 {
     margin-bottom: var(--spacing-03);
 }
 
-h5 {
-    margin-bottom: 0;
+p, li {
+    margin-bottom: var(--spacing-07);
+    color: var(--text-primary);
+    overflow-wrap: break-word;
+    text-justify: inter-word;
 }
 
-h1+p,
-h1 + p + p {
-    font-size: var(--desktop-body-xl);
-    line-height: var(--lh-desktop-body-xl);
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-09);
+span, strong {
+    font-weight: 500;
+    font-family: var(--code);
+    color: var(--text-primary);
+    text-decoration: underline dotted var(--border);
+    text-underline-offset: var(--spacing-02);
+}
 
-    @media screen and (max-width: 600px) {
-        font-size: var(--mobile-body-xl);
-        line-height: var(--lh-mobile-body-xl);
+%list-base {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-02);
+}
+
+%list-item {
+    position: relative;
+    
+    &::before {
+        font-feature-settings: 'case', 'tnum';
+        left: 0;
+        position: absolute;
+        top: 0;
     }
 }
 
 ul {
+    @extend %list-base;
+    padding: 0;
     font-size: var(--desktop-body);
     line-height: var(--lh-desktop-body);
-    list-style-type: disc;
     -webkit-margin-before: 1em;
     -webkit-margin-after: 1em;
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
     -webkit-padding-start: var(--spacing-08);
-
-    @media screen and (max-width: 600px) {
-        font-size: var(--mobile-body);
-        line-height: var(--lh-mobile-body);
-    }
+    
+    @include mobile-typography;
 
     li {
-        font-size: var(--desktop-body);
-        line-height: var(--lh-desktop-body);
+        @extend %list-item;
+        padding-left: var(--spacing-08);
+        list-style: none;
         margin-bottom: var(--spacing-02);
+        
+        &::before {
+            content: '—';
+            opacity: 0.32;
+        }
+        
+        @include mobile-typography;
+    }
+}
 
-        @media screen and (max-width: 600px) {
-            font-size: var(--mobile-body);
-            line-height: var(--lh-mobile-body);
-            margin-bottom: var(--spacing-02);
+ol {
+    @extend %list-base;
+    counter-reset: counter;
+
+    li {
+        @extend %list-item;
+        counter-increment: counter;
+        padding-left: var(--spacing-09);
+
+        &::before {
+            content: counter(counter) '.';
+            text-align: right;
+            width: var(--spacing-08);
         }
     }
 }
 
-ol,
-ul {
-    display: flex;
-    flex-direction: column;
+blockquote {
+    padding: 0 0 0 12px;
+    color: var(--text-primary);
+    border-left: 3px solid var(--border);
+    margin-bottom: var(--spacing-07);
+
+    > :first-child { margin-top: 0; }
+    > :last-child { margin-bottom: 0; }
 }
 
-ol li,
-ul li {
-    position: relative;
-}
-
-ol li:before,
-ul li:before {
-    font-feature-settings: 'case', 'tnum';
-    left: 0;
-    position: absolute;
-    top: 0;
-}
-
-ol {
-    counter-reset: counter;
-    gap: var(--spacing-02);
-}
-
-ol li {
-    counter-increment: counter;
-    padding-left: var(--spacing-09);
-}
-
-ol li:before {
-    content: counter(counter) '.';
-    text-align: right;
-    width: var(--spacing-08);
-}
-
-ul {
-    gap: var(--spacing-02);
-    padding: 0;
-}
-
-ul li {
-    padding-left: var(--spacing-08);
-    list-style: none;
-}
-
-ul li:before {
-    content: '—';
-    opacity: 0.32;
-}
-
-figure {
-    margin-top: var(--spacing-08);
-    margin-left: calc(var(--spacing-04) * -1);
-}
-
-dl {
-    font-feature-settings: 'case';
-    font-size: var(--desktop-body);
-    line-height: var(--lh-desktop-body);
-    margin: var(--spacing-06) var(--spacing-00);
-}
-
-dl dt {
-    font-weight: 500;
-}
-
-dl dd {
-    color: var(--text-secondary);
+%table-cell-base {
+    padding: var(--spacing-02) var(--spacing-04);
+    text-align: left;
+    border-bottom: 1px solid var(--border-muted);
 }
 
 table {
-    overflow: auto;
-    border: none;
     width: 100%;
     max-width: 100%;
     border-radius: 3px;
@@ -363,34 +314,27 @@ table {
     border: 1px solid var(--border-muted);
     font-size: var(--desktop-body);
     line-height: var(--lh-desktop-body);
-  
-    @media screen and (max-width: 600px) {
-        font-size: var(--mobile-body);
-        line-height: var(--lh-mobile-body);
-    }
+    
+    @include mobile-typography;
 }
 
 th {
-    padding: var(--spacing-02) var(--spacing-04);
+    @extend %table-cell-base;
     color: var(--doc-color-black);
     font-weight: 500;
-    text-align: left;
-    border-bottom: 1px solid var(--border-muted);
 }
-  
+
 td {
-    padding: var(--spacing-02) var(--spacing-04);
-    text-align: left;
-    border-bottom: 1px solid var(--border-muted);
-  
+    @extend %table-cell-base;
+    
     tr:last-child & {
         border-bottom: none;
     }
-}
-
-td.breakout {
-    font-weight: 500;
-    padding-top: var(--spacing-06);
+    
+    &.breakout {
+        font-weight: 500;
+        padding-top: var(--spacing-06);
+    }
 }
 
 code {
@@ -403,7 +347,7 @@ code {
     margin-bottom: var(--spacing-07);
     color: var(--text-primary);
 }
-  
+
 pre {
     word-wrap: normal;
     padding: var(--spacing-07);
@@ -412,14 +356,8 @@ pre {
     margin-bottom: var(--spacing-12);
     border-radius: var(--spacing-03);
 
-    &:not(:last-child):has(+ p) {
-        margin-bottom: var(--spacing-06);
-    }
-
-    &:not(:last-child):has(+ p + p) {
-        margin-bottom: var(--spacing-06);
-    }
-
+    &:not(:last-child):has(+ p),
+    &:not(:last-child):has(+ p + p),
     &:not(:last-of-type) {
         margin-bottom: var(--spacing-06);
     }
@@ -435,10 +373,10 @@ pre {
         background: transparent;
         border: 0;
     }
-}
 
-section > pre:last-child {
-    margin-bottom: 0;
+    &:last-child {
+        margin-bottom: 0;
+    }
 }
 
 a {
@@ -448,13 +386,8 @@ a {
     text-underline-offset: 0.1em;
     color: var(--link);
 
-    &:hover {
-        color: var(--link-hover);
-    }
-
-    &:visited {
-        color: var(--link-visited);
-    }
+    &:hover { color: var(--link-hover); }
+    &:visited { color: var(--link-visited); }
 }
 
 b,
@@ -466,6 +399,26 @@ strong {
 i,
 em {
     font-style: italic;
+}
+
+dl {
+    font-feature-settings: 'case';
+    font-size: var(--desktop-body);
+    line-height: var(--lh-desktop-body);
+    margin: var(--spacing-06) var(--spacing-00);
+
+    dt {
+        font-weight: 500;
+    }
+
+    dd {
+        color: var(--text-secondary);
+    }
+}
+
+figure {
+    margin-top: var(--spacing-08);
+    margin-left: calc(var(--spacing-04) * -1);
 }
 
 @media (max-width: 50rem) {
