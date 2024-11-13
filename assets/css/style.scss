@@ -227,6 +227,10 @@ p, li {
     color: var(--text-primary);
     overflow-wrap: break-word;
     text-justify: inter-word;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 }
 
 #faqs p {
@@ -386,6 +390,11 @@ pre {
         word-break: normal;
         background: transparent;
         border: 0;
+
+        span {
+            color: var(--text-secondary-alt);
+            text-decoration: none;
+        }
     }
 
     &:last-child {

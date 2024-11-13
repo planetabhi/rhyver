@@ -161,83 +161,30 @@ Week 29 │ v2.24Q3.29.0     Quarter plan alignment
 </code></pre>
 
 <h5>Risk Indicators</h5>
-<pre><code>High risk:
+<pre><code>High risk
 └── No releases for more than 2 weeks
 └── Hotfix ratio greater than 20%
 
-Low risk:
+Low risk
 └── Release gap of 1 week
 └── Story count drops by 25%
 </code></pre>
 
-</section>
+</section>       
 
 <section>
-<h3>Finding Your Rhythm</h3>
-<p>Examples of handling version transitions across quarters, years, and major releases.</p>
+<h3>Using in Design</h3>
+<p>Design files typically evolve incrementally with each iteration, so the granular "STORY" component is not as relevant. The version can be kept at the "WEEK" level.</p>  
 
-<table style="max-width: 100%; width: 100%;">
-<tbody>
-<tr>
-<td colspan="2" class="breakout">Quarter transition
-</td>
-<tr>
-<td><code>v2.24Q1.13.24</code> &nbsp;&nbsp;&nbsp;</td>
-<td>Last week considered Q1</td>
-</tr>
-<tr>
-<td><code>v2.24Q2.14.0</code></td>
-<td>First week considered Q2</td>
-</tr>
+<p>Use the Rhythm Versioning format as the commit messages when saving new versions in Figma to make the version history more meaningful and aligned with development.</p>
 
-<tr>
-<td colspan="2" class="breakout">Year transition
-</td>
-<tr>
-<td><code>v2.23Q4.52.1</code> &nbsp;&nbsp;&nbsp;</td>
-<td>ISO week 52, 2023</td>
-</tr>
-<tr>
-<td><code>v2.24Q1.01.0</code></td>
-<td>ISO week 1, 2024</td>
-</tr>
+<pre><code>Version history commit
+v2.24Q4.45.x     <span>// Major.YYQ#.Week.x</span>  
+v2.24Q4.46.x     <span>// Week changes</span>
+v3.24Q4.46.x     <span>// Major version changes</span>
+</code></pre>
 
-<tr>
-<td colspan="2" class="breakout">Release pattern
-</td> 
-<tr>
-<td><code>v2.24Q2.16.0</code> &nbsp;&nbsp;&nbsp;</td>
-<td>Initial release, ISO week 16</td>
-</tr>
-<tr>
-<td><code>v2.24Q2.16.1</code></td>
-<td>Story release</td>
-</tr>
-<tr>
-<td><code>v2.24Q2.17.0</code></td>
-<td>Next week release</td>
-</tr>
-
-<tr>
-<td colspan="2" class="breakout">Major version change
-</td> 
-</tr>
-<tr>
-<td><code>v2.24Q2.16.5</code></td>
-<td>Current version</td>
-</tr>
-<tr>
-<td><code>v3.24Q2.16.0-beta.1</code> &nbsp;&nbsp;&nbsp;</td>
-<td>Beta for major update</td>
-</tr>
-<tr>
-<td><code>v3.24Q2.16.0</code></td>
-<td>Major version release</td>
-</tr>
-
-</tbody>
-</table> 
-</section>        
+</section>
 
 <section>
 <h3>Using with npm</h3>
@@ -245,15 +192,15 @@ Low risk:
 
 <pre><code>{
   "name": "package-name",
-  "rhyver": "v2.24Q4.45.32",   // Store full RhyVer
-  "version": "2.45.32"         // Simplified from v2.24Q4.45.32
+  "rhyver": "v2.24Q4.45.32",   <span>// Store full RhyVer</span>
+  "version": "2.45.32"         <span>// Simplified from v2.24Q4.45.32</span>
 }
 </code></pre>
 
 <pre><code>RhyVer           │ npm
-v2.24Q4.45.32    │ 2.45.32     // Major.Week.Story
-v2.24Q4.45.33    │ 2.45.33     // Story changes
-v3.24Q4.46.0     │ 3.46.0      // Major version changes
+v2.24Q4.45.32    │ 2.45.32     <span>// Major.Week.Story</span>
+v2.24Q4.45.33    │ 2.45.33     <span>// Story changes</span>
+v3.24Q4.46.0     │ 3.46.0      <span>// Major version changes</span>
 </code></pre>
 </section>
 
@@ -271,20 +218,20 @@ v3.24Q4.46.0     │ 3.46.0      // Major version changes
 
 <h5>How do I handle hotfixes vs regular stories?</h5>
 <p>Hotfixes and regular stories use the STORY number but can be distinguished by the release process. Use pre-release tags for hotfix candidates needing testing before deployment.</p>
-<pre><code>Regular story: v2.24Q2.16.0 → v2.24Q2.16.1  // Normal iteration
-Hotfix from production: v2.24Q2.16.0 → v2.24Q2.16.1-hotfix.1 → v2.24Q2.16.1  // Emergency fix
+<pre><code>Regular story: v2.24Q2.16.0 → v2.24Q2.16.1  <span>// Normal iteration</span>
+Hotfix from production: v2.24Q2.16.0 → v2.24Q2.16.1-hotfix.1 → v2.24Q2.16.1  <span>// Emergency fix</span>
 </code></pre>
 
 <h5>What quarter applies to a release spanning multiple quarters?</h5>
 <p>Always use the quarter of the release, not when development started, to clarify when the software was released.</p>
-<pre><code>v2.24Q1.13.2  // Last release in Q1
-v2.24Q2.14.0  // First release in Q2, even if development started in Q1
+<pre><code>v2.24Q1.13.2  <span>// Last release in Q1</span>
+v2.24Q2.14.0  <span>// First release in Q2, even if dev started in Q1</span>
 </code></pre>
 
 <h5>How do I handle ISO week vs Quarter misalignment?</h5>
 <p>Use the quarter designation that best fits your reporting, regardless of ISO week boundaries. The Q# is for business context, while the ISO week number provides timing.</p>
-<pre><code>v2.24Q1.13.0  // Even if week 13 slightly overlaps Q2
-v2.24Q2.14.0  // Starting Q2 designation with week 14
+<pre><code>v2.24Q1.13.0  <span>// Even if week 13 slightly overlaps Q2</span>
+v2.24Q2.14.0  <span>// Starting Q2 designation with week 14</span>
 </code></pre>
 
 </section>
