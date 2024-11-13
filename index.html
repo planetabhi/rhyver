@@ -141,23 +141,16 @@
  │   │  └───────     Calendar pulse
  │   └──────────     Business cycle
  └──────────────     Major changes
-
-Q1 (Weeks 01-13)     New year momentum
-Q2 (Weeks 14-26)     Building velocity
-Q3 (Weeks 27-39)     Sustained delivery
-Q4 (Weeks 40-52)     Year-end alignment
 </pre></code>
 
 <h5>Release Sequence</h5>
 
 <pre><code>Week 27 │ v2.24Q3.27.0     Release of milestone 01
-        │ v2.24Q3.27.1     Feedback incorporated
-        │ v2.24Q3.27.2     Design & performance improvements
+        │ v2.24Q3.27.1     Polishing
+        │ v2.24Q3.27.2     Qualitative feedback
         │
-Week 28 │ v2.24Q3.28.0     Release of milestone 02
-        │ v2.24Q3.28.1     Polishing
-        │
-Week 29 │ v2.24Q3.29.0     Quarter plan alignment
+Week 28 │ v2.24Q3.28.0     Design improvements
+        │ v2.24Q3.27.1     Release of milestone 02
 </code></pre>
 
 <h5>Risk Indicators</h5>
@@ -176,10 +169,10 @@ Low risk
 <h3>Using in Design</h3>
 <p>Design files typically evolve incrementally with each iteration, so the granular "STORY" component is not as relevant. The version can be kept at the "WEEK" level.</p>  
 
-<p>Use the Rhythm Versioning format as the commit messages when saving new versions in Figma to make the version history more meaningful and aligned with development.</p>
+<p>Use the Rhythm Versioning format as the commit messages when saving new versions to make the version history more meaningful and aligned with development.</p>
 
 <pre><code>Version history commit
-v2.24Q4.45.x     <span>// Major.YYQ#.Week.x</span>  
+v2.24Q4.45.x     <span>// Major.YYQ#.Week</span>  
 v2.24Q4.46.x     <span>// Week changes</span>
 v3.24Q4.46.x     <span>// Major version changes</span>
 </code></pre>
