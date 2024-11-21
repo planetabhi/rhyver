@@ -338,12 +338,15 @@ table {
 
 th {
     @extend %table-cell-base;
-    color: var(--doc-color-black);
+    color: var(--text-primary);
     font-weight: 500;
 }
 
 td {
     @extend %table-cell-base;
+    color: var(--text-secondary);
+    font-size: var(--desktop-body-sm);
+    line-height: var(--lh-desktop-body-sm);
     
     tr:last-child & {
         border-bottom: none;
