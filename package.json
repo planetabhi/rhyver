@@ -1,7 +1,7 @@
 {
   "name": "rhyver",
-  "version": "1.48.1",
-  "rhyver": "v1.24Q4.48.1",
+  "version": "2.08.1",
+  "rhyver": "v2.25Q1.08.1",
   "description": "RhyVer combines version tracking with calendar dates (year, quarter, week) to help teams maintain regular release schedules and align software updates with business planning cycles.",
   "type": "module",
   "moduleResolution": "node",
