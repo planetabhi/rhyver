@@ -30,9 +30,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/error.js
+// node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/error.js
 var require_error = __commonJS({
-  "node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/error.js"(exports) {
+  "node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/error.js"(exports) {
     "use strict";
     var CommanderError2 = class extends Error {
       /**
@@ -66,9 +66,9 @@ var require_error = __commonJS({
   }
 });
 
-// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/argument.js
+// node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/argument.js
 var require_argument = __commonJS({
-  "node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/argument.js"(exports) {
+  "node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/argument.js"(exports) {
     "use strict";
     var { InvalidArgumentError: InvalidArgumentError2 } = require_error();
     var Argument2 = class {
@@ -194,17 +194,29 @@ var require_argument = __commonJS({
   }
 });
 
-// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/help.js
+// node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/help.js
 var require_help = __commonJS({
-  "node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/help.js"(exports) {
+  "node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/help.js"(exports) {
     "use strict";
     var { humanReadableArgName } = require_argument();
     var Help2 = class {
       constructor() {
         this.helpWidth = void 0;
+        this.minWidthToWrap = 40;
         this.sortSubcommands = false;
         this.sortOptions = false;
         this.showGlobalOptions = false;
+      }
+      /**
+       * prepareContext is called by Commander after applying overrides from `Command.configureHelp()`
+       * and just before calling `formatHelp()`.
+       *
+       * Commander just uses the helpWidth and the rest is provided for optional use by more complex subclasses.
+       *
+       * @param {{ error?: boolean, helpWidth?: number, outputHasColors?: boolean }} contextOptions
+       */
+      prepareContext(contextOptions) {
+        this.helpWidth = this.helpWidth ?? contextOptions.helpWidth ?? 80;
       }
       /**
        * Get an array of the visible subcommands. Includes a placeholder for the implicit help command, if there is one.
@@ -342,7 +354,12 @@ var require_help = __commonJS({
        */
       longestSubcommandTermLength(cmd, helper) {
         return helper.visibleCommands(cmd).reduce((max, command) => {
-          return Math.max(max, helper.subcommandTerm(command).length);
+          return Math.max(
+            max,
+            this.displayWidth(
+              helper.styleSubcommandTerm(helper.subcommandTerm(command))
+            )
+          );
         }, 0);
       }
       /**
@@ -354,7 +371,10 @@ var require_help = __commonJS({
        */
       longestOptionTermLength(cmd, helper) {
         return helper.visibleOptions(cmd).reduce((max, option) => {
-          return Math.max(max, helper.optionTerm(option).length);
+          return Math.max(
+            max,
+            this.displayWidth(helper.styleOptionTerm(helper.optionTerm(option)))
+          );
         }, 0);
       }
       /**
@@ -366,7 +386,10 @@ var require_help = __commonJS({
        */
       longestGlobalOptionTermLength(cmd, helper) {
         return helper.visibleGlobalOptions(cmd).reduce((max, option) => {
-          return Math.max(max, helper.optionTerm(option).length);
+          return Math.max(
+            max,
+            this.displayWidth(helper.styleOptionTerm(helper.optionTerm(option)))
+          );
         }, 0);
       }
       /**
@@ -378,7 +401,12 @@ var require_help = __commonJS({
        */
       longestArgumentTermLength(cmd, helper) {
         return helper.visibleArguments(cmd).reduce((max, argument) => {
-          return Math.max(max, helper.argumentTerm(argument).length);
+          return Math.max(
+            max,
+            this.displayWidth(
+              helper.styleArgumentTerm(helper.argumentTerm(argument))
+            )
+          );
         }, 0);
       }
       /**
@@ -470,11 +498,11 @@ var require_help = __commonJS({
           );
         }
         if (extraInfo.length > 0) {
-          const extraDescripton = `(${extraInfo.join(", ")})`;
+          const extraDescription = `(${extraInfo.join(", ")})`;
           if (argument.description) {
-            return `${argument.description} ${extraDescripton}`;
+            return `${argument.description} ${extraDescription}`;
           }
-          return extraDescripton;
+          return extraDescription;
         }
         return argument.description;
       }
@@ -487,74 +515,147 @@ var require_help = __commonJS({
        */
       formatHelp(cmd, helper) {
         const termWidth = helper.padWidth(cmd, helper);
-        const helpWidth = helper.helpWidth || 80;
-        const itemIndentWidth = 2;
-        const itemSeparatorWidth = 2;
-        function formatItem(term, description) {
-          if (description) {
-            const fullText = `${term.padEnd(termWidth + itemSeparatorWidth)}${description}`;
-            return helper.wrap(
-              fullText,
-              helpWidth - itemIndentWidth,
-              termWidth + itemSeparatorWidth
-            );
-          }
-          return term;
+        const helpWidth = helper.helpWidth ?? 80;
+        function callFormatItem(term, description) {
+          return helper.formatItem(term, termWidth, description, helper);
         }
-        function formatList(textArray) {
-          return textArray.join("\n").replace(/^/gm, " ".repeat(itemIndentWidth));
-        }
-        let output = [`Usage: ${helper.commandUsage(cmd)}`, ""];
+        let output = [
+          `${helper.styleTitle("Usage:")} ${helper.styleUsage(helper.commandUsage(cmd))}`,
+          ""
+        ];
         const commandDescription = helper.commandDescription(cmd);
         if (commandDescription.length > 0) {
           output = output.concat([
-            helper.wrap(commandDescription, helpWidth, 0),
+            helper.boxWrap(
+              helper.styleCommandDescription(commandDescription),
+              helpWidth
+            ),
             ""
           ]);
         }
         const argumentList = helper.visibleArguments(cmd).map((argument) => {
-          return formatItem(
-            helper.argumentTerm(argument),
-            helper.argumentDescription(argument)
+          return callFormatItem(
+            helper.styleArgumentTerm(helper.argumentTerm(argument)),
+            helper.styleArgumentDescription(helper.argumentDescription(argument))
           );
         });
         if (argumentList.length > 0) {
-          output = output.concat(["Arguments:", formatList(argumentList), ""]);
+          output = output.concat([
+            helper.styleTitle("Arguments:"),
+            ...argumentList,
+            ""
+          ]);
         }
         const optionList = helper.visibleOptions(cmd).map((option) => {
-          return formatItem(
-            helper.optionTerm(option),
-            helper.optionDescription(option)
+          return callFormatItem(
+            helper.styleOptionTerm(helper.optionTerm(option)),
+            helper.styleOptionDescription(helper.optionDescription(option))
           );
         });
         if (optionList.length > 0) {
-          output = output.concat(["Options:", formatList(optionList), ""]);
+          output = output.concat([
+            helper.styleTitle("Options:"),
+            ...optionList,
+            ""
+          ]);
         }
-        if (this.showGlobalOptions) {
+        if (helper.showGlobalOptions) {
           const globalOptionList = helper.visibleGlobalOptions(cmd).map((option) => {
-            return formatItem(
-              helper.optionTerm(option),
-              helper.optionDescription(option)
+            return callFormatItem(
+              helper.styleOptionTerm(helper.optionTerm(option)),
+              helper.styleOptionDescription(helper.optionDescription(option))
             );
           });
           if (globalOptionList.length > 0) {
             output = output.concat([
-              "Global Options:",
-              formatList(globalOptionList),
+              helper.styleTitle("Global Options:"),
+              ...globalOptionList,
               ""
             ]);
           }
         }
         const commandList = helper.visibleCommands(cmd).map((cmd2) => {
-          return formatItem(
-            helper.subcommandTerm(cmd2),
-            helper.subcommandDescription(cmd2)
+          return callFormatItem(
+            helper.styleSubcommandTerm(helper.subcommandTerm(cmd2)),
+            helper.styleSubcommandDescription(helper.subcommandDescription(cmd2))
           );
         });
         if (commandList.length > 0) {
-          output = output.concat(["Commands:", formatList(commandList), ""]);
+          output = output.concat([
+            helper.styleTitle("Commands:"),
+            ...commandList,
+            ""
+          ]);
         }
         return output.join("\n");
+      }
+      /**
+       * Return display width of string, ignoring ANSI escape sequences. Used in padding and wrapping calculations.
+       *
+       * @param {string} str
+       * @returns {number}
+       */
+      displayWidth(str) {
+        return stripColor(str).length;
+      }
+      /**
+       * Style the title for displaying in the help. Called with 'Usage:', 'Options:', etc.
+       *
+       * @param {string} str
+       * @returns {string}
+       */
+      styleTitle(str) {
+        return str;
+      }
+      styleUsage(str) {
+        return str.split(" ").map((word) => {
+          if (word === "[options]") return this.styleOptionText(word);
+          if (word === "[command]") return this.styleSubcommandText(word);
+          if (word[0] === "[" || word[0] === "<")
+            return this.styleArgumentText(word);
+          return this.styleCommandText(word);
+        }).join(" ");
+      }
+      styleCommandDescription(str) {
+        return this.styleDescriptionText(str);
+      }
+      styleOptionDescription(str) {
+        return this.styleDescriptionText(str);
+      }
+      styleSubcommandDescription(str) {
+        return this.styleDescriptionText(str);
+      }
+      styleArgumentDescription(str) {
+        return this.styleDescriptionText(str);
+      }
+      styleDescriptionText(str) {
+        return str;
+      }
+      styleOptionTerm(str) {
+        return this.styleOptionText(str);
+      }
+      styleSubcommandTerm(str) {
+        return str.split(" ").map((word) => {
+          if (word === "[options]") return this.styleOptionText(word);
+          if (word[0] === "[" || word[0] === "<")
+            return this.styleArgumentText(word);
+          return this.styleSubcommandText(word);
+        }).join(" ");
+      }
+      styleArgumentTerm(str) {
+        return this.styleArgumentText(str);
+      }
+      styleOptionText(str) {
+        return str;
+      }
+      styleArgumentText(str) {
+        return str;
+      }
+      styleSubcommandText(str) {
+        return str;
+      }
+      styleCommandText(str) {
+        return str;
       }
       /**
        * Calculate the pad width from the maximum term length.
@@ -572,46 +673,100 @@ var require_help = __commonJS({
         );
       }
       /**
-       * Wrap the given string to width characters per line, with lines after the first indented.
-       * Do not wrap if insufficient room for wrapping (minColumnWidth), or string is manually formatted.
+       * Detect manually wrapped and indented strings by checking for line break followed by whitespace.
+       *
+       * @param {string} str
+       * @returns {boolean}
+       */
+      preformatted(str) {
+        return /\n[^\S\r\n]/.test(str);
+      }
+      /**
+       * Format the "item", which consists of a term and description. Pad the term and wrap the description, indenting the following lines.
+       *
+       * So "TTT", 5, "DDD DDDD DD DDD" might be formatted for this.helpWidth=17 like so:
+       *   TTT  DDD DDDD
+       *        DD DDD
+       *
+       * @param {string} term
+       * @param {number} termWidth
+       * @param {string} description
+       * @param {Help} helper
+       * @returns {string}
+       */
+      formatItem(term, termWidth, description, helper) {
+        const itemIndent = 2;
+        const itemIndentStr = " ".repeat(itemIndent);
+        if (!description) return itemIndentStr + term;
+        const paddedTerm = term.padEnd(
+          termWidth + term.length - helper.displayWidth(term)
+        );
+        const spacerWidth = 2;
+        const helpWidth = this.helpWidth ?? 80;
+        const remainingWidth = helpWidth - termWidth - spacerWidth - itemIndent;
+        let formattedDescription;
+        if (remainingWidth < this.minWidthToWrap || helper.preformatted(description)) {
+          formattedDescription = description;
+        } else {
+          const wrappedDescription = helper.boxWrap(description, remainingWidth);
+          formattedDescription = wrappedDescription.replace(
+            /\n/g,
+            "\n" + " ".repeat(termWidth + spacerWidth)
+          );
+        }
+        return itemIndentStr + paddedTerm + " ".repeat(spacerWidth) + formattedDescription.replace(/\n/g, `
+${itemIndentStr}`);
+      }
+      /**
+       * Wrap a string at whitespace, preserving existing line breaks.
+       * Wrapping is skipped if the width is less than `minWidthToWrap`.
        *
        * @param {string} str
        * @param {number} width
-       * @param {number} indent
-       * @param {number} [minColumnWidth=40]
-       * @return {string}
-       *
+       * @returns {string}
        */
-      wrap(str, width, indent, minColumnWidth = 40) {
-        const indents = " \\f\\t\\v\xA0\u1680\u2000-\u200A\u202F\u205F\u3000\uFEFF";
-        const manualIndent = new RegExp(`[\\n][${indents}]+`);
-        if (str.match(manualIndent)) return str;
-        const columnWidth = width - indent;
-        if (columnWidth < minColumnWidth) return str;
-        const leadingStr = str.slice(0, indent);
-        const columnText = str.slice(indent).replace("\r\n", "\n");
-        const indentString = " ".repeat(indent);
-        const zeroWidthSpace = "\u200B";
-        const breaks = `\\s${zeroWidthSpace}`;
-        const regex = new RegExp(
-          `
-|.{1,${columnWidth - 1}}([${breaks}]|$)|[^${breaks}]+?([${breaks}]|$)`,
-          "g"
-        );
-        const lines = columnText.match(regex) || [];
-        return leadingStr + lines.map((line, i) => {
-          if (line === "\n") return "";
-          return (i > 0 ? indentString : "") + line.trimEnd();
-        }).join("\n");
+      boxWrap(str, width) {
+        if (width < this.minWidthToWrap) return str;
+        const rawLines = str.split(/\r\n|\n/);
+        const chunkPattern = /[\s]*[^\s]+/g;
+        const wrappedLines = [];
+        rawLines.forEach((line) => {
+          const chunks = line.match(chunkPattern);
+          if (chunks === null) {
+            wrappedLines.push("");
+            return;
+          }
+          let sumChunks = [chunks.shift()];
+          let sumWidth = this.displayWidth(sumChunks[0]);
+          chunks.forEach((chunk) => {
+            const visibleWidth = this.displayWidth(chunk);
+            if (sumWidth + visibleWidth <= width) {
+              sumChunks.push(chunk);
+              sumWidth += visibleWidth;
+              return;
+            }
+            wrappedLines.push(sumChunks.join(""));
+            const nextChunk = chunk.trimStart();
+            sumChunks = [nextChunk];
+            sumWidth = this.displayWidth(nextChunk);
+          });
+          wrappedLines.push(sumChunks.join(""));
+        });
+        return wrappedLines.join("\n");
       }
     };
+    function stripColor(str) {
+      const sgrPattern = /\x1b\[\d*(;\d*)*m/g;
+      return str.replace(sgrPattern, "");
+    }
     exports.Help = Help2;
+    exports.stripColor = stripColor;
   }
 });
 
-// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/option.js
+// node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/option.js
 var require_option = __commonJS({
-  "node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/option.js"(exports) {
+  "node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/option.js"(exports) {
     "use strict";
     var { InvalidArgumentError: InvalidArgumentError2 } = require_error();
     var Option2 = class {
@@ -794,12 +949,15 @@ var require_option = __commonJS({
       }
       /**
        * Return option name, in a camelcase format that can be used
-       * as a object attribute key.
+       * as an object attribute key.
        *
        * @return {string}
        */
       attributeName() {
-        return camelcase(this.name().replace(/^no-/, ""));
+        if (this.negate) {
+          return camelcase(this.name().replace(/^no-/, ""));
+        }
+        return camelcase(this.name());
       }
       /**
        * Check if `arg` matches the short or long flag.
@@ -867,14 +1025,40 @@ var require_option = __commonJS({
     function splitOptionFlags(flags) {
       let shortFlag;
       let longFlag;
-      const flagParts = flags.split(/[ |,]+/);
-      if (flagParts.length > 1 && !/^[[<]/.test(flagParts[1]))
+      const shortFlagExp = /^-[^-]$/;
+      const longFlagExp = /^--[^-]/;
+      const flagParts = flags.split(/[ |,]+/).concat("guard");
+      if (shortFlagExp.test(flagParts[0])) shortFlag = flagParts.shift();
+      if (longFlagExp.test(flagParts[0])) longFlag = flagParts.shift();
+      if (!shortFlag && shortFlagExp.test(flagParts[0]))
         shortFlag = flagParts.shift();
-      longFlag = flagParts.shift();
-      if (!shortFlag && /^-[^-]$/.test(longFlag)) {
+      if (!shortFlag && longFlagExp.test(flagParts[0])) {
         shortFlag = longFlag;
-        longFlag = void 0;
+        longFlag = flagParts.shift();
       }
+      if (flagParts[0].startsWith("-")) {
+        const unsupportedFlag = flagParts[0];
+        const baseError = `option creation failed due to '${unsupportedFlag}' in option flags '${flags}'`;
+        if (/^-[^-][^-]/.test(unsupportedFlag))
+          throw new Error(
+            `${baseError}
+- a short flag is a single dash and a single character
+  - either use a single dash and a single character (for a short flag)
+  - or use a double dash for a long option (and can have two, like '--ws, --workspace')`
+          );
+        if (shortFlagExp.test(unsupportedFlag))
+          throw new Error(`${baseError}
+- too many short flags`);
+        if (longFlagExp.test(unsupportedFlag))
+          throw new Error(`${baseError}
+- too many long flags`);
+        throw new Error(`${baseError}
+- unrecognised flag format`);
+      }
+      if (shortFlag === void 0 && longFlag === void 0)
+        throw new Error(
+          `option creation failed due to no flags found in '${flags}'.`
+        );
       return { shortFlag, longFlag };
     }
     exports.Option = Option2;
@@ -882,9 +1066,9 @@ var require_option = __commonJS({
   }
 });
 
-// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/suggestSimilar.js
+// node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/suggestSimilar.js
 var require_suggestSimilar = __commonJS({
-  "node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/suggestSimilar.js"(exports) {
+  "node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/suggestSimilar.js"(exports) {
     "use strict";
     var maxDistance = 3;
     function editDistance(a, b) {
@@ -963,9 +1147,9 @@ var require_suggestSimilar = __commonJS({
   }
 });
 
-// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/command.js
+// node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/command.js
 var require_command = __commonJS({
-  "node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/command.js"(exports) {
+  "node_modules/.pnpm/commander@13.1.0/node_modules/commander/lib/command.js"(exports) {
     "use strict";
     var EventEmitter = __require("node:events").EventEmitter;
     var childProcess = __require("node:child_process");
@@ -974,7 +1158,7 @@ var require_command = __commonJS({
     var process2 = __require("node:process");
     var { Argument: Argument2, humanReadableArgName } = require_argument();
     var { CommanderError: CommanderError2 } = require_error();
-    var { Help: Help2 } = require_help();
+    var { Help: Help2, stripColor } = require_help();
     var { Option: Option2, DualOptions } = require_option();
     var { suggestSimilar } = require_suggestSimilar();
     var Command2 = class _Command extends EventEmitter {
@@ -989,7 +1173,7 @@ var require_command = __commonJS({
         this.options = [];
         this.parent = null;
         this._allowUnknownOption = false;
-        this._allowExcessArguments = true;
+        this._allowExcessArguments = false;
         this.registeredArguments = [];
         this._args = this.registeredArguments;
         this.args = [];
@@ -1016,12 +1200,16 @@ var require_command = __commonJS({
         this._lifeCycleHooks = {};
         this._showHelpAfterError = false;
         this._showSuggestionAfterError = true;
+        this._savedState = null;
         this._outputConfiguration = {
           writeOut: (str) => process2.stdout.write(str),
           writeErr: (str) => process2.stderr.write(str),
+          outputError: (str, write) => write(str),
           getOutHelpWidth: () => process2.stdout.isTTY ? process2.stdout.columns : void 0,
           getErrHelpWidth: () => process2.stderr.isTTY ? process2.stderr.columns : void 0,
-          outputError: (str, write) => write(str)
+          getOutHasColors: () => useColor() ?? (process2.stdout.isTTY && process2.stdout.hasColors?.()),
+          getErrHasColors: () => useColor() ?? (process2.stderr.isTTY && process2.stderr.hasColors?.()),
+          stripColor: (str) => stripColor(str)
         };
         this._hidden = false;
         this._helpOption = void 0;
@@ -1149,14 +1337,18 @@ var require_command = __commonJS({
        *
        * The configuration properties are all functions:
        *
-       *     // functions to change where being written, stdout and stderr
+       *     // change how output being written, defaults to stdout and stderr
        *     writeOut(str)
        *     writeErr(str)
-       *     // matching functions to specify width for wrapping help
+       *     // change how output being written for errors, defaults to writeErr
+       *     outputError(str, write) // used for displaying errors and not used for displaying help
+       *     // specify width for wrapping help
        *     getOutHelpWidth()
        *     getErrHelpWidth()
-       *     // functions based on what is being written out
-       *     outputError(str, write) // used for displaying errors, and not used for displaying help
+       *     // color support, currently only used with Help
+       *     getOutHasColors()
+       *     getErrHasColors()
+       *     stripColor() // used to remove ANSI escape codes if output does not have colors
        *
        * @param {object} [configuration] - configuration options
        * @return {(Command | object)} `this` command for chaining, or stored configuration
@@ -1596,7 +1788,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
        * @example
        * program
        *     .option('-p, --pepper', 'add pepper')
-       *     .option('-p, --pizza-type <TYPE>', 'type of pizza') // required option-argument
+       *     .option('--pt, --pizza-type <TYPE>', 'type of pizza') // required option-argument
        *     .option('-c, --cheese [CHEESE]', 'add extra cheese', 'mozzarella') // optional option-argument with default
        *     .option('-t, --tip <VALUE>', 'add tip to purchase cost', parseFloat) // custom parse function
        *
@@ -1863,6 +2055,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
        * @return {Command} `this` command for chaining
        */
       parse(argv, parseOptions) {
+        this._prepareForParse();
         const userArgs = this._prepareUserArgs(argv, parseOptions);
         this._parseCommand([], userArgs);
         return this;
@@ -1888,9 +2081,67 @@ Expecting one of '${allowedValues.join("', '")}'`);
        * @return {Promise}
        */
       async parseAsync(argv, parseOptions) {
+        this._prepareForParse();
         const userArgs = this._prepareUserArgs(argv, parseOptions);
         await this._parseCommand([], userArgs);
         return this;
+      }
+      _prepareForParse() {
+        if (this._savedState === null) {
+          this.saveStateBeforeParse();
+        } else {
+          this.restoreStateBeforeParse();
+        }
+      }
+      /**
+       * Called the first time parse is called to save state and allow a restore before subsequent calls to parse.
+       * Not usually called directly, but available for subclasses to save their custom state.
+       *
+       * This is called in a lazy way. Only commands used in parsing chain will have state saved.
+       */
+      saveStateBeforeParse() {
+        this._savedState = {
+          // name is stable if supplied by author, but may be unspecified for root command and deduced during parsing
+          _name: this._name,
+          // option values before parse have default values (including false for negated options)
+          // shallow clones
+          _optionValues: { ...this._optionValues },
+          _optionValueSources: { ...this._optionValueSources }
+        };
+      }
+      /**
+       * Restore state before parse for calls after the first.
+       * Not usually called directly, but available for subclasses to save their custom state.
+       *
+       * This is called in a lazy way. Only commands used in parsing chain will have state restored.
+       */
+      restoreStateBeforeParse() {
+        if (this._storeOptionsAsProperties)
+          throw new Error(`Can not call parse again when storeOptionsAsProperties is true.
+- either make a new Command for each call to parse, or stop storing options as properties`);
+        this._name = this._savedState._name;
+        this._scriptPath = null;
+        this.rawArgs = [];
+        this._optionValues = { ...this._savedState._optionValues };
+        this._optionValueSources = { ...this._savedState._optionValueSources };
+        this.args = [];
+        this.processedArgs = [];
+      }
+      /**
+       * Throw if expected executable is missing. Add lots of help for author.
+       *
+       * @param {string} executableFile
+       * @param {string} executableDir
+       * @param {string} subcommandName
+       */
+      _checkForMissingExecutable(executableFile, executableDir, subcommandName) {
+        if (fs.existsSync(executableFile)) return;
+        const executableDirMessage = executableDir ? `searched for local subcommand relative to directory '${executableDir}'` : "no directory for search for local subcommand, use .executableDir() to supply a custom directory";
+        const executableMissing = `'${executableFile}' does not exist
+ - if '${subcommandName}' is not meant to be an executable command, remove description parameter from '.command()' and use '.description()' instead
+ - if the default executable name is not suitable, use the executableFile option to supply a custom name or path
+ - ${executableDirMessage}`;
+        throw new Error(executableMissing);
       }
       /**
        * Execute a sub-command executable.
@@ -1919,7 +2170,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
           let resolvedScriptPath;
           try {
             resolvedScriptPath = fs.realpathSync(this._scriptPath);
-          } catch (err) {
+          } catch {
             resolvedScriptPath = this._scriptPath;
           }
           executableDir = path.resolve(
@@ -1954,6 +2205,11 @@ Expecting one of '${allowedValues.join("', '")}'`);
             proc = childProcess.spawn(executableFile, args, { stdio: "inherit" });
           }
         } else {
+          this._checkForMissingExecutable(
+            executableFile,
+            executableDir,
+            subcommand._name
+          );
           args.unshift(executableFile);
           args = incrementNodeInspectorPort(process2.execArgv).concat(args);
           proc = childProcess.spawn(process2.execPath, args, { stdio: "inherit" });
@@ -1985,12 +2241,11 @@ Expecting one of '${allowedValues.join("', '")}'`);
         });
         proc.on("error", (err) => {
           if (err.code === "ENOENT") {
-            const executableDirMessage = executableDir ? `searched for local subcommand relative to directory '${executableDir}'` : "no directory for search for local subcommand, use .executableDir() to supply a custom directory";
-            const executableMissing = `'${executableFile}' does not exist
- - if '${subcommand._name}' is not meant to be an executable command, remove description parameter from '.command()' and use '.description()' instead
- - if the default executable name is not suitable, use the executableFile option to supply a custom name or path
- - ${executableDirMessage}`;
-            throw new Error(executableMissing);
+            this._checkForMissingExecutable(
+              executableFile,
+              executableDir,
+              subcommand._name
+            );
           } else if (err.code === "EACCES") {
             throw new Error(`'${executableFile}' not executable`);
           }
@@ -2014,6 +2269,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
       _dispatchSubcommand(commandName, operands, unknown) {
         const subCommand = this._findCommand(commandName);
         if (!subCommand) this.help({ error: true });
+        subCommand._prepareForParse();
         let promiseChain;
         promiseChain = this._chainOrCallSubCommandHook(
           promiseChain,
@@ -2325,6 +2581,8 @@ Expecting one of '${allowedValues.join("', '")}'`);
       /**
        * Parse options from `argv` removing known options,
        * and return argv split into operands and unknown arguments.
+       *
+       * Side effects: modifies command by storing options. Does not reset state if called again.
        *
        * Examples:
        *
@@ -2810,26 +3068,47 @@ Expecting one of '${allowedValues.join("', '")}'`);
        */
       helpInformation(contextOptions) {
         const helper = this.createHelp();
-        if (helper.helpWidth === void 0) {
-          helper.helpWidth = contextOptions && contextOptions.error ? this._outputConfiguration.getErrHelpWidth() : this._outputConfiguration.getOutHelpWidth();
-        }
-        return helper.formatHelp(this, helper);
+        const context = this._getOutputContext(contextOptions);
+        helper.prepareContext({
+          error: context.error,
+          helpWidth: context.helpWidth,
+          outputHasColors: context.hasColors
+        });
+        const text = helper.formatHelp(this, helper);
+        if (context.hasColors) return text;
+        return this._outputConfiguration.stripColor(text);
       }
       /**
+       * @typedef HelpContext
+       * @type {object}
+       * @property {boolean} error
+       * @property {number} helpWidth
+       * @property {boolean} hasColors
+       * @property {function} write - includes stripColor if needed
+       *
+       * @returns {HelpContext}
        * @private
        */
-      _getHelpContext(contextOptions) {
+      _getOutputContext(contextOptions) {
         contextOptions = contextOptions || {};
-        const context = { error: !!contextOptions.error };
-        let write;
-        if (context.error) {
-          write = (arg) => this._outputConfiguration.writeErr(arg);
+        const error = !!contextOptions.error;
+        let baseWrite;
+        let hasColors;
+        let helpWidth;
+        if (error) {
+          baseWrite = (str) => this._outputConfiguration.writeErr(str);
+          hasColors = this._outputConfiguration.getErrHasColors();
+          helpWidth = this._outputConfiguration.getErrHelpWidth();
         } else {
-          write = (arg) => this._outputConfiguration.writeOut(arg);
+          baseWrite = (str) => this._outputConfiguration.writeOut(str);
+          hasColors = this._outputConfiguration.getOutHasColors();
+          helpWidth = this._outputConfiguration.getOutHelpWidth();
         }
-        context.write = contextOptions.write || write;
-        context.command = this;
-        return context;
+        const write = (str) => {
+          if (!hasColors) str = this._outputConfiguration.stripColor(str);
+          return baseWrite(str);
+        };
+        return { error, write, hasColors, helpWidth };
       }
       /**
        * Output help information for this command.
@@ -2844,23 +3123,28 @@ Expecting one of '${allowedValues.join("', '")}'`);
           deprecatedCallback = contextOptions;
           contextOptions = void 0;
         }
-        const context = this._getHelpContext(contextOptions);
-        this._getCommandAndAncestors().reverse().forEach((command) => command.emit("beforeAllHelp", context));
-        this.emit("beforeHelp", context);
-        let helpInformation = this.helpInformation(context);
+        const outputContext = this._getOutputContext(contextOptions);
+        const eventContext = {
+          error: outputContext.error,
+          write: outputContext.write,
+          command: this
+        };
+        this._getCommandAndAncestors().reverse().forEach((command) => command.emit("beforeAllHelp", eventContext));
+        this.emit("beforeHelp", eventContext);
+        let helpInformation = this.helpInformation({ error: outputContext.error });
         if (deprecatedCallback) {
           helpInformation = deprecatedCallback(helpInformation);
           if (typeof helpInformation !== "string" && !Buffer.isBuffer(helpInformation)) {
             throw new Error("outputHelp callback must return a string or a Buffer");
           }
         }
-        context.write(helpInformation);
+        outputContext.write(helpInformation);
         if (this._getHelpOption()?.long) {
           this.emit(this._getHelpOption().long);
         }
-        this.emit("afterHelp", context);
+        this.emit("afterHelp", eventContext);
         this._getCommandAndAncestors().forEach(
-          (command) => command.emit("afterAllHelp", context)
+          (command) => command.emit("afterAllHelp", eventContext)
         );
       }
       /**
@@ -2922,12 +3206,20 @@ Expecting one of '${allowedValues.join("', '")}'`);
        */
       help(contextOptions) {
         this.outputHelp(contextOptions);
-        let exitCode = process2.exitCode || 0;
+        let exitCode = Number(process2.exitCode ?? 0);
         if (exitCode === 0 && contextOptions && typeof contextOptions !== "function" && contextOptions.error) {
           exitCode = 1;
         }
         this._exit(exitCode, "commander.help", "(outputHelp)");
       }
+      /**
+       * // Do a little typing to coordinate emit and listener for the help text events.
+       * @typedef HelpTextEventContext
+       * @type {object}
+       * @property {boolean} error
+       * @property {Command} command
+       * @property {function} write
+       */
       /**
        * Add additional text to be displayed with the built-in help.
        *
@@ -3003,13 +3295,21 @@ Expecting one of '${allowedValues.join("', '")}'`);
         return arg;
       });
     }
+    function useColor() {
+      if (process2.env.NO_COLOR || process2.env.FORCE_COLOR === "0" || process2.env.FORCE_COLOR === "false")
+        return false;
+      if (process2.env.FORCE_COLOR || process2.env.CLICOLOR_FORCE !== void 0)
+        return true;
+      return void 0;
+    }
     exports.Command = Command2;
+    exports.useColor = useColor;
   }
 });
 
-// node_modules/.pnpm/commander@12.1.0/node_modules/commander/index.js
+// node_modules/.pnpm/commander@13.1.0/node_modules/commander/index.js
 var require_commander = __commonJS({
-  "node_modules/.pnpm/commander@12.1.0/node_modules/commander/index.js"(exports) {
+  "node_modules/.pnpm/commander@13.1.0/node_modules/commander/index.js"(exports) {
     "use strict";
     var { Argument: Argument2 } = require_argument();
     var { Command: Command2 } = require_command();
@@ -3033,7 +3333,7 @@ var require_commander = __commonJS({
 // rhyver.ts
 import { fileURLToPath } from "url";
 
-// node_modules/.pnpm/commander@12.1.0/node_modules/commander/esm.mjs
+// node_modules/.pnpm/commander@13.1.0/node_modules/commander/esm.mjs
 var import_index = __toESM(require_commander(), 1);
 var {
   program,
